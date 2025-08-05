@@ -1,0 +1,33 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Energy Price Comparison Tool" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="container mx-auto px-4 py-8">
+      <header class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-2">⚡ Energy Price Comparison</h1>
+        <p class="text-lg text-gray-600">Compare electricity prices across different vendors and consumption levels</p>
+      </header>
+      <slot />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style> 

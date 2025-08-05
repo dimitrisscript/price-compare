@@ -1,0 +1,187 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
+---
+
+<Layout title="Energy Price Comparison">
+  <div class="space-y-8">
+    <!-- Vendor Management Section -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <h2 class="text-2xl font-semibold text-gray-900 mb-4">📊 Vendor Management</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <h3 class="text-lg font-medium text-gray-800 mb-3">Add Custom Vendor</h3>
+          <form id="vendorForm" class="space-y-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input type="text" id="vendorName" placeholder="Vendor Name" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="text" id="planName" placeholder="Plan Name" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <input type="number" id="fixedPrice" placeholder="Fixed Price (€)" step="0.01" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="number" id="kwhPrice" placeholder="kWh Price (€)" step="0.0001" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="url" id="vendorLink" placeholder="Link (optional)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" 
+              class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+              Add Vendor
+            </button>
+          </form>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-gray-800 mb-3">Custom Vendors</h3>
+          <div id="customVendorsList" class="space-y-2 max-h-64 overflow-y-auto">
+            <!-- Custom vendors will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Comparison Tables -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <h2 class="text-2xl font-semibold text-gray-900 mb-4">💰 Price Comparison</h2>
+      <div class="space-y-6">
+        {CONSUMPTION_LEVELS.map(kwh => (
+          <div class="border border-gray-200 rounded-lg p-4">
+            <h3 class="text-lg font-medium text-gray-800 mb-3">{kwh} kWh Consumption</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="bg-gray-50">
+                    <th class="text-left py-2 px-3 font-medium text-gray-700">Rank</th>
+                    <th class="text-left py-2 px-3 font-medium text-gray-700">Vendor</th>
+                    <th class="text-left py-2 px-3 font-medium text-gray-700">Plan</th>
+                    <th class="text-right py-2 px-3 font-medium text-gray-700">Fixed Price</th>
+                    <th class="text-right py-2 px-3 font-medium text-gray-700">kWh Price</th>
+                    <th class="text-right py-2 px-3 font-medium text-gray-700">Total Price</th>
+                    <th class="text-center py-2 px-3 font-medium text-gray-700">Link</th>
+                  </tr>
+                </thead>
+                <tbody id={`table-${kwh}`} class="divide-y divide-gray-200">
+                  <!-- Data will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { getDefaultVendors, calculateAllPrices, saveVendorsToStorage, loadVendorsFromStorage } from '../utils/calculations';
+  import type { Vendor, PriceCalculation } from '../types/vendor';
+
+  // Initialize vendors
+  let allVendors: Vendor[] = [...getDefaultVendors(), ...loadVendorsFromStorage()];
+  
+  // Update all tables
+  function updateAllTables() {
+    const consumptionLevels = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500];
+    
+    consumptionLevels.forEach(kwh => {
+      const calculations = calculateAllPrices(allVendors, kwh);
+      updateTable(kwh, calculations);
+    });
+  }
+
+  // Update specific table
+  function updateTable(kwh: number, calculations: PriceCalculation[]) {
+    const tableBody = document.getElementById(`table-${kwh}`);
+    if (!tableBody) return;
+
+    tableBody.innerHTML = calculations.map((calc, index) => `
+      <tr class="hover:bg-gray-50 ${index === 0 ? 'bg-green-50' : ''}">
+        <td class="py-2 px-3 text-gray-900 font-medium">${index + 1}</td>
+        <td class="py-2 px-3 text-gray-900">${calc.vendor}</td>
+        <td class="py-2 px-3 text-gray-700">${calc.plan}</td>
+        <td class="py-2 px-3 text-right text-gray-700">€${calc.fixedPrice.toFixed(2)}</td>
+        <td class="py-2 px-3 text-right text-gray-700">€${calc.kwhPrice.toFixed(4)}</td>
+        <td class="py-2 px-3 text-right font-semibold text-gray-900">€${calc.totalPrice.toFixed(2)}</td>
+        <td class="py-2 px-3 text-center">
+          ${calc.link ? `<a href="${calc.link}" target="_blank" class="text-blue-600 hover:text-blue-800 underline">Visit</a>` : '-'}
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // Update custom vendors list
+  function updateCustomVendorsList() {
+    const customVendors = loadVendorsFromStorage();
+    const container = document.getElementById('customVendorsList');
+    if (!container) return;
+
+    container.innerHTML = customVendors.map((vendor, index) => `
+      <div class="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+        <div class="flex-1">
+          <div class="font-medium text-gray-900">${vendor.vendor} - ${vendor.plan}</div>
+          <div class="text-sm text-gray-600">Fixed: €${vendor.fixedPrice} | kWh: €${vendor.kwhPrice}</div>
+        </div>
+        <button onclick="removeCustomVendor(${index})" 
+          class="ml-2 text-red-600 hover:text-red-800 text-sm font-medium">
+          Remove
+        </button>
+      </div>
+    `).join('');
+  }
+
+  // Add custom vendor
+  function addCustomVendor(event: Event) {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    const vendor: Vendor = {
+      vendor: (document.getElementById('vendorName') as HTMLInputElement).value,
+      plan: (document.getElementById('planName') as HTMLInputElement).value,
+      fixedPrice: parseFloat((document.getElementById('fixedPrice') as HTMLInputElement).value),
+      kwhPrice: parseFloat((document.getElementById('kwhPrice') as HTMLInputElement).value),
+      link: (document.getElementById('vendorLink') as HTMLInputElement).value || ''
+    };
+
+    const customVendors = loadVendorsFromStorage();
+    customVendors.push(vendor);
+    saveVendorsToStorage(customVendors);
+    
+    // Update all vendors and tables
+    allVendors = [...getDefaultVendors(), ...customVendors];
+    updateAllTables();
+    updateCustomVendorsList();
+    
+    // Reset form
+    form.reset();
+  }
+
+  // Remove custom vendor
+  function removeCustomVendor(index: number) {
+    const customVendors = loadVendorsFromStorage();
+    customVendors.splice(index, 1);
+    saveVendorsToStorage(customVendors);
+    
+    // Update all vendors and tables
+    allVendors = [...getDefaultVendors(), ...customVendors];
+    updateAllTables();
+    updateCustomVendorsList();
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    // Set up form submission
+    const form = document.getElementById('vendorForm');
+    if (form) {
+      form.addEventListener('submit', addCustomVendor);
+    }
+
+    // Make removeCustomVendor available globally
+    (window as any).removeCustomVendor = removeCustomVendor;
+
+    // Initial render
+    updateAllTables();
+    updateCustomVendorsList();
+  });
+</script>
