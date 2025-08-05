@@ -6,34 +6,34 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
 <Layout title="Energy Price Comparison">
   <div class="space-y-8">
     <!-- Vendor Management Section -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-      <h2 class="text-2xl font-semibold text-gray-900 mb-4">📊 Vendor Management</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">📊 Vendor Management</h2>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
-          <h3 class="text-lg font-medium text-gray-800 mb-3">Add Custom Vendor</h3>
+          <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3">Add Custom Vendor</h3>
           <form id="vendorForm" class="space-y-3">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <input type="text" id="vendorName" placeholder="Vendor Name" required
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
               <input type="text" id="planName" placeholder="Plan Name" required
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <input type="number" id="fixedPrice" placeholder="Fixed Price (€)" step="0.01" required
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
               <input type="number" id="kwhPrice" placeholder="kWh Price (€)" step="0.0001" required
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
               <input type="url" id="vendorLink" placeholder="Link (optional)"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
             </div>
             <button type="submit" 
-              class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+              class="w-full bg-blue-600 dark:bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors cursor-pointer">
               Add Vendor
             </button>
           </form>
         </div>
         <div>
-          <h3 class="text-lg font-medium text-gray-800 mb-3">Custom Vendors</h3>
+          <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3">Custom Vendors</h3>
           <div id="customVendorsList" class="space-y-2 max-h-64 overflow-y-auto">
             <!-- Custom vendors will be populated here -->
           </div>
@@ -42,29 +42,55 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     </div>
 
     <!-- Price Comparison Tables -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-      <h2 class="text-2xl font-semibold text-gray-900 mb-4">💰 Price Comparison</h2>
-      <div class="space-y-6">
-        {CONSUMPTION_LEVELS.map(kwh => (
-          <div class="border border-gray-200 rounded-lg p-4">
-            <h3 class="text-lg font-medium text-gray-800 mb-3">{kwh} kWh Consumption</h3>
-            <div class="overflow-x-auto">
-              <table class="w-full text-sm">
-                <thead>
-                  <tr class="bg-gray-50">
-                    <th class="text-left py-2 px-3 font-medium text-gray-700">Rank</th>
-                    <th class="text-left py-2 px-3 font-medium text-gray-700">Vendor</th>
-                    <th class="text-left py-2 px-3 font-medium text-gray-700">Plan</th>
-                    <th class="text-right py-2 px-3 font-medium text-gray-700">Fixed Price</th>
-                    <th class="text-right py-2 px-3 font-medium text-gray-700">kWh Price</th>
-                    <th class="text-right py-2 px-3 font-medium text-gray-700">Total Price</th>
-                    <th class="text-center py-2 px-3 font-medium text-gray-700">Link</th>
-                  </tr>
-                </thead>
-                <tbody id={`table-${kwh}`} class="divide-y divide-gray-200">
-                  <!-- Data will be populated by JavaScript -->
-                </tbody>
-              </table>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">💰 Price Comparison</h2>
+        <div class="flex gap-2">
+          <button id="expandAll" class="px-4 py-2 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 transition-colors text-sm cursor-pointer">
+            Expand All
+          </button>
+          <button id="collapseAll" class="px-4 py-2 bg-gray-600 dark:bg-gray-500 text-white rounded-md hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm cursor-pointer">
+            Collapse All
+          </button>
+        </div>
+      </div>
+      <div class="space-y-4">
+        {CONSUMPTION_LEVELS.map((kwh, index) => (
+          <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+            <button 
+              class="accordion-trigger w-full px-4 py-3 text-left bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors flex justify-between items-center cursor-pointer"
+              data-target={`accordion-${kwh}`}
+              aria-expanded="false"
+              aria-controls={`accordion-${kwh}`}>
+              <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200">{kwh} kWh Consumption</h3>
+              <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div 
+              id={`accordion-${kwh}`} 
+              class="accordion-content hidden bg-white dark:bg-gray-800"
+              aria-labelledby={`accordion-${kwh}`}>
+              <div class="p-4">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="bg-gray-50 dark:bg-gray-700">
+                        <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Rank</th>
+                        <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Vendor</th>
+                        <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Plan</th>
+                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Fixed Price</th>
+                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300">kWh Price</th>
+                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Total Price</th>
+                        <th class="text-center py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Link</th>
+                      </tr>
+                    </thead>
+                    <tbody id={`table-${kwh}`} class="divide-y divide-gray-200 dark:divide-gray-700">
+                      <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         ))}
@@ -79,6 +105,53 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
 
   // Initialize vendors
   let allVendors: Vendor[] = [...getDefaultVendors(), ...loadVendorsFromStorage()];
+  
+  // Accordion functionality
+  function initAccordions() {
+    const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+    
+    accordionTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const targetId = trigger.getAttribute('data-target');
+        const target = document.getElementById(targetId!);
+        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+        
+        // Toggle current accordion
+        trigger.setAttribute('aria-expanded', (!isExpanded).toString());
+        target!.classList.toggle('hidden', isExpanded);
+        
+        // Rotate arrow icon
+        const arrow = trigger.querySelector('svg');
+        arrow!.classList.toggle('rotate-180', !isExpanded);
+      });
+    });
+  }
+
+  // Expand all accordions
+  function expandAll() {
+    const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+    const accordionContents = document.querySelectorAll('.accordion-content');
+    const arrows = document.querySelectorAll('.accordion-trigger svg');
+    
+    accordionTriggers.forEach((trigger, index) => {
+      trigger.setAttribute('aria-expanded', 'true');
+      accordionContents[index].classList.remove('hidden');
+      arrows[index].classList.add('rotate-180');
+    });
+  }
+
+  // Collapse all accordions
+  function collapseAll() {
+    const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+    const accordionContents = document.querySelectorAll('.accordion-content');
+    const arrows = document.querySelectorAll('.accordion-trigger svg');
+    
+    accordionTriggers.forEach((trigger, index) => {
+      trigger.setAttribute('aria-expanded', 'false');
+      accordionContents[index].classList.add('hidden');
+      arrows[index].classList.remove('rotate-180');
+    });
+  }
   
   // Update all tables
   function updateAllTables() {
@@ -96,15 +169,15 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     if (!tableBody) return;
 
     tableBody.innerHTML = calculations.map((calc, index) => `
-      <tr class="hover:bg-gray-50 ${index === 0 ? 'bg-green-50' : ''}">
-        <td class="py-2 px-3 text-gray-900 font-medium">${index + 1}</td>
-        <td class="py-2 px-3 text-gray-900">${calc.vendor}</td>
-        <td class="py-2 px-3 text-gray-700">${calc.plan}</td>
-        <td class="py-2 px-3 text-right text-gray-700">€${calc.fixedPrice.toFixed(2)}</td>
-        <td class="py-2 px-3 text-right text-gray-700">€${calc.kwhPrice.toFixed(4)}</td>
-        <td class="py-2 px-3 text-right font-semibold text-gray-900">€${calc.totalPrice.toFixed(2)}</td>
+      <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 ${index === 0 ? 'bg-green-50 dark:bg-green-900/20' : ''}">
+        <td class="py-2 px-3 text-gray-900 dark:text-white font-medium">${index + 1}</td>
+        <td class="py-2 px-3 text-gray-900 dark:text-white">${calc.vendor}</td>
+        <td class="py-2 px-3 text-gray-700 dark:text-gray-300">${calc.plan}</td>
+        <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${calc.fixedPrice.toFixed(2)}</td>
+        <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${calc.kwhPrice.toFixed(4)}</td>
+        <td class="py-2 px-3 text-right font-semibold text-gray-900 dark:text-white">€${calc.totalPrice.toFixed(2)}</td>
         <td class="py-2 px-3 text-center">
-          ${calc.link ? `<a href="${calc.link}" target="_blank" class="text-blue-600 hover:text-blue-800 underline">Visit</a>` : '-'}
+          ${calc.link ? `<a href="${calc.link}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">Visit</a>` : '-'}
         </td>
       </tr>
     `).join('');
@@ -117,13 +190,13 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     if (!container) return;
 
     container.innerHTML = customVendors.map((vendor, index) => `
-      <div class="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+      <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
         <div class="flex-1">
-          <div class="font-medium text-gray-900">${vendor.vendor} - ${vendor.plan}</div>
-          <div class="text-sm text-gray-600">Fixed: €${vendor.fixedPrice} | kWh: €${vendor.kwhPrice}</div>
+          <div class="font-medium text-gray-900 dark:text-white">${vendor.vendor} - ${vendor.plan}</div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">Fixed: €${vendor.fixedPrice} | kWh: €${vendor.kwhPrice}</div>
         </div>
         <button onclick="removeCustomVendor(${index})" 
-          class="ml-2 text-red-600 hover:text-red-800 text-sm font-medium">
+          class="ml-2 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm font-medium cursor-pointer">
           Remove
         </button>
       </div>
@@ -175,6 +248,21 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     const form = document.getElementById('vendorForm');
     if (form) {
       form.addEventListener('submit', addCustomVendor);
+    }
+
+    // Initialize accordions
+    initAccordions();
+
+    // Set up expand/collapse all buttons
+    const expandAllBtn = document.getElementById('expandAll');
+    const collapseAllBtn = document.getElementById('collapseAll');
+    
+    if (expandAllBtn) {
+      expandAllBtn.addEventListener('click', expandAll);
+    }
+    
+    if (collapseAllBtn) {
+      collapseAllBtn.addEventListener('click', collapseAll);
     }
 
     // Make removeCustomVendor available globally
