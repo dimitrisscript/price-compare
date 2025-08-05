@@ -264,7 +264,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
   // Find plan ranking for a specific vendor/plan across all consumption levels
   function findPlanRanking(selectedVendor: string, selectedPlan: string) {
     const consumptionLevels = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500];
-    const rankings: { kwh: number; rank: number; totalPrice: number; bestPlan: string; bestPlanPrice: number }[] = [];
+    const rankings: { kwh: number; rank: number; totalPrice: number; bestPlan: string; bestPlanPrice: number; bestPlanLink: string }[] = [];
     
     consumptionLevels.forEach(kwh => {
       const calculations = calculateAllPrices(allVendors, kwh);
@@ -278,7 +278,8 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
           rank: planIndex + 1,
           totalPrice: calculations[planIndex].totalPrice,
           bestPlan: calculations[0].plan,
-          bestPlanPrice: calculations[0].totalPrice
+          bestPlanPrice: calculations[0].totalPrice,
+          bestPlanLink: calculations[0].link
         });
       }
     });
@@ -325,7 +326,11 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
            }">${ranking.rank}</span>
          </td>
          <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${ranking.totalPrice.toFixed(2)}</td>
-         <td class="py-2 px-3 text-center text-sm text-gray-600 dark:text-gray-400">${ranking.bestPlan}</td>
+         <td class="py-2 px-3 text-center text-sm text-gray-600 dark:text-gray-400">
+           ${ranking.bestPlanLink ? 
+             `<a href="${ranking.bestPlanLink}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">${ranking.bestPlan}</a>` : 
+             ranking.bestPlan}
+         </td>
          <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${ranking.bestPlanPrice.toFixed(2)}</td>
        </tr>
      `).join('');
