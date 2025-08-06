@@ -310,8 +310,15 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
       return;
     }
     
-    // Update plan name
-    selectedPlanName.textContent = `${selectedVendor} - ${selectedPlan}`;
+         // Update plan name
+     const selectedVendorData = allVendors.find(v => v.vendor === selectedVendor && v.plan === selectedPlan);
+     const planLink = selectedVendorData?.link || '';
+     
+     if (planLink) {
+       selectedPlanName.innerHTML = `<a href="${planLink}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">${selectedVendor} - ${selectedPlan}</a>`;
+     } else {
+       selectedPlanName.textContent = `${selectedVendor} - ${selectedPlan}`;
+     }
     
          // Update ranking table
      rankingTable.innerHTML = rankings.map(ranking => `
