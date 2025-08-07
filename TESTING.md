@@ -1,267 +1,231 @@
-# Testing Documentation
+# Testing Guide
 
-This document provides comprehensive information about the testing setup for the Energy Price Comparison Tool.
+This project includes comprehensive testing with both unit tests (Vitest) and end-to-end tests (Playwright).
 
 ## Test Structure
 
-The project includes a comprehensive test suite organized into the following categories:
-
-### 1. Unit Tests (`src/test/calculations.test.ts`)
-Tests individual utility functions with focused, isolated test cases:
-- **Price Calculations**: Tests for `calculatePrice`, `calculateAllPrices`, `calculateAllConsumptionLevels`
-- **Data Management**: Tests for `getDefaultVendors`, `saveVendorsToStorage`, `loadVendorsFromStorage`
-- **CSV Parsing**: Tests for `parseCSVData` with various input formats
-- **Constants**: Tests for `CONSUMPTION_LEVELS` array
-
-### 2. Type Tests (`src/test/types.test.ts`)
-Verifies TypeScript type definitions work correctly:
-- **Interface Validation**: Tests that `Vendor`, `PriceCalculation`, and `ConsumptionLevel` interfaces work as expected
-- **Type Compatibility**: Tests that types can be used in arrays and other data structures
-- **Edge Cases**: Tests with empty strings, decimal values, and zero prices
-
-### 3. Integration Tests (`src/test/integration.test.ts`)
-Tests complete workflows and real-world scenarios:
-- **Complete Workflows**: Tests the entire process from loading vendors to calculating prices
-- **Custom Vendors**: Tests saving, loading, and combining custom vendors with defaults
-- **Real-world Scenarios**: Tests typical household consumption patterns
-- **Data Consistency**: Tests that data integrity is maintained across operations
-- **Performance**: Tests with large datasets and multiple calculations
-
-### 4. Utility Tests (`src/test/utils.test.ts`)
-Tests edge cases, error handling, and performance:
-- **Edge Cases**: Tests with very small/large numbers, negative values, NaN, Infinity
-- **CSV Parsing**: Tests various CSV formats and error conditions
-- **Storage**: Tests localStorage operations with large data and special characters
-- **Performance**: Tests rapid calculations and memory usage
-
-## Test Coverage
-
-The test suite provides excellent coverage of the core functionality:
-
-- **95.87%** coverage of `src/utils/calculations.ts` (the core business logic)
-- **100%** function coverage of utility functions
-- **90.9%** branch coverage of utility functions
-- **64 total tests** across all categories
+```
+tests/
+├── e2e/                    # End-to-end tests
+│   ├── app.spec.ts        # Main application tests
+│   └── user-workflows.spec.ts  # User workflow tests
+src/
+└── test/                  # Unit tests
+    ├── calculations.test.ts
+    ├── i18n.test.ts
+    ├── integration.test.ts
+    ├── types.test.ts
+    └── utils.test.ts
+```
 
 ## Running Tests
 
-### Available Commands
+### Unit Tests (Vitest)
 
 ```bash
-# Run tests in watch mode (recommended for development)
-npm test
+# Run all unit tests
+npm run test
 
-# Run tests with UI interface
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with UI
 npm run test:ui
 
-# Run tests once
-npm run test:run
-
-# Run tests with coverage report
+# Run tests with coverage
 npm run test:coverage
 ```
 
-### Test Environment
+### End-to-End Tests (Playwright)
 
-The tests use:
-- **Vitest**: Fast test runner with excellent TypeScript support
-- **jsdom**: Browser-like environment for DOM testing
-- **Mocked localStorage**: Simulated browser storage for testing
-- **Performance testing**: Built-in performance measurement
+```bash
+# Run all E2E tests
+npm run test:e2e
 
-## Test Categories
+# Run E2E tests with UI
+npm run test:e2e:ui
 
-### Price Calculation Tests
+# Run E2E tests in headed mode (see browser)
+npm run test:e2e:headed
 
-Tests verify that price calculations are accurate and handle edge cases:
+# Run E2E tests in debug mode
+npm run test:e2e:debug
 
-```typescript
-// Basic calculation
-expect(calculatePrice(vendor, 100).totalPrice).toBe(25.0);
-
-// Edge cases
-expect(calculatePrice(vendor, 0).totalPrice).toBe(10.0); // Only fixed price
-expect(calculatePrice(vendor, -50).totalPrice).toBe(2.5); // Negative consumption
+# Run only visual regression tests
+npm run test:visual
 ```
 
-### Storage Tests
+### Run All Tests
 
-Tests verify localStorage operations work correctly:
-
-```typescript
-// Save and load vendors
-saveVendorsToStorage(vendors);
-expect(localStorage.setItem).toHaveBeenCalledWith('customVendors', JSON.stringify(vendors));
-
-// Handle errors gracefully
-expect(() => saveVendorsToStorage(vendors)).not.toThrow();
+```bash
+# Run both unit and E2E tests
+npm run test:all
 ```
 
-### CSV Parsing Tests
+## Test Types
 
-Tests verify CSV data can be parsed correctly:
+### Unit Tests
+- **Location**: `src/test/`
+- **Framework**: Vitest + JSDOM
+- **Coverage**: Business logic, utilities, calculations
+- **Files**:
+  - `calculations.test.ts` - Price calculation logic
+  - `i18n.test.ts` - Internationalization
+  - `integration.test.ts` - Complete workflows
+  - `types.test.ts` - Type definitions
+  - `utils.test.ts` - Utility functions
 
-```typescript
-// Valid CSV
-const result = parseCSVData(csvData);
-expect(result[0].vendor).toBe('Vendor A');
+### End-to-End Tests
+- **Location**: `tests/e2e/`
+- **Framework**: Playwright
+- **Coverage**: User interactions, UI functionality
+- **Files**:
+  - `app.spec.ts` - Main application functionality
+  - `user-workflows.spec.ts` - Specific user workflows
 
-// Invalid CSV throws error
-expect(() => parseCSVData(invalidCsv)).toThrow();
+## Visual Regression Testing
+
+The E2E tests include visual regression testing that captures screenshots of key UI components:
+
+- Main page layout
+- Vendor management section
+- Consumption analysis table
+- Plan comparison section
+- Mobile layout
+
+Screenshots are automatically compared against baseline images to detect visual regressions.
+
+## Test Features
+
+### E2E Test Features
+- **Multi-browser testing**: Chrome, Firefox, Safari
+- **Mobile testing**: iPhone 12, Pixel 5
+- **Visual regression**: Automatic screenshot comparison
+- **Responsive testing**: Different viewport sizes
+- **Accessibility testing**: Keyboard navigation, focus management
+
+### Unit Test Features
+- **JSDOM environment**: Browser-like testing environment
+- **Mocked localStorage**: Persistent storage testing
+- **Type safety**: Full TypeScript support
+- **Coverage reporting**: Detailed coverage metrics
+
+## Continuous Integration
+
+GitHub Actions automatically runs tests on:
+- Push to main/develop branches
+- Pull requests
+
+### CI Jobs
+1. **Unit Tests**: Runs Vitest with coverage
+2. **E2E Tests**: Runs Playwright tests
+3. **Visual Regression**: Runs visual regression tests
+
+## Debugging Tests
+
+### Debug Unit Tests
+```bash
+# Run specific test file
+npm run test src/test/calculations.test.ts
+
+# Run with debug output
+npm run test -- --reporter=verbose
 ```
 
-### Integration Tests
+### Debug E2E Tests
+```bash
+# Run specific test
+npm run test:e2e -- --grep "should add a custom vendor"
 
-Tests verify complete workflows work end-to-end:
+# Run with headed browser
+npm run test:e2e:headed
 
-```typescript
-// Complete workflow
-const allVendors = [...defaultVendors, ...loadVendorsFromStorage()];
-const calculations = calculateAllPrices(allVendors, 500);
-expect(calculations.length).toBe(allVendors.length);
+# Run with debug mode
+npm run test:e2e:debug
 ```
 
-## Test Data
+## Writing Tests
 
-### Mock Vendors
+### Adding Unit Tests
+1. Create test file in `src/test/`
+2. Import functions to test
+3. Use Vitest's `describe`, `it`, `expect`
+4. Mock browser APIs as needed
 
-Tests use consistent mock data for reliable results:
-
+Example:
 ```typescript
-const mockVendors = [
-  {
-    vendor: 'Vendor A',
-    plan: 'Plan A',
-    fixedPrice: 5.0,
-    kwhPrice: 0.12,
-    link: 'https://vendor-a.com'
-  },
-  // ... more vendors
-];
-```
+import { describe, it, expect } from 'vitest';
+import { calculatePrice } from '../utils/calculations';
 
-### Consumption Levels
-
-Tests verify behavior across all consumption levels:
-
-```typescript
-const CONSUMPTION_LEVELS = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500];
-```
-
-## Error Handling
-
-The test suite verifies that the application handles errors gracefully:
-
-### localStorage Errors
-- Storage quota exceeded
-- Invalid JSON data
-- Missing data
-
-### CSV Parsing Errors
-- Invalid format
-- Missing columns
-- Invalid numeric values
-
-### Calculation Errors
-- NaN values
-- Infinity values
-- Negative numbers
-
-## Performance Testing
-
-Tests verify that the application performs well:
-
-### Speed Tests
-- Large vendor lists (1000+ vendors)
-- Multiple consumption level calculations
-- Rapid successive calculations
-
-### Memory Tests
-- Memory usage doesn't increase dramatically
-- No memory leaks with large datasets
-
-## Best Practices
-
-### Writing New Tests
-
-1. **Test the behavior, not the implementation**
-2. **Use descriptive test names**
-3. **Test edge cases and error conditions**
-4. **Keep tests isolated and independent**
-5. **Use consistent mock data**
-
-### Test Organization
-
-```typescript
-describe('Function Name', () => {
-  describe('specific behavior', () => {
-    it('should do something specific', () => {
-      // Arrange
-      const input = 'test data';
-      
-      // Act
-      const result = functionUnderTest(input);
-      
-      // Assert
-      expect(result).toBe(expectedValue);
-    });
+describe('Price Calculations', () => {
+  it('should calculate correct price', () => {
+    const result = calculatePrice(100, 5, 0.12);
+    expect(result).toBe(17);
   });
 });
 ```
 
-### Mocking Guidelines
+### Adding E2E Tests
+1. Create test file in `tests/e2e/`
+2. Use Playwright's `test`, `expect`
+3. Navigate and interact with the page
+4. Assert expected outcomes
 
+Example:
 ```typescript
-// Mock localStorage
-(localStorage.getItem as any).mockReturnValue(JSON.stringify(data));
+import { test, expect } from '@playwright/test';
 
-// Mock performance
-const startTime = performance.now();
-// ... test code ...
-const endTime = performance.now();
-expect(endTime - startTime).toBeLessThan(100);
+test('should add vendor', async ({ page }) => {
+  await page.goto('/');
+  await page.fill('#vendorName', 'Test Vendor');
+  await page.click('button[type="submit"]');
+  await expect(page.locator('#customVendorsList')).toContainText('Test Vendor');
+});
 ```
 
-## Continuous Integration
+## Best Practices
 
-The test suite is designed to run in CI/CD environments:
+### Unit Tests
+- Test one function/feature per test
+- Use descriptive test names
+- Mock external dependencies
+- Test edge cases and error conditions
+- Aim for high coverage
 
-- **Fast execution**: Tests complete in under 1 second
-- **No external dependencies**: All tests are self-contained
-- **Consistent results**: Tests are deterministic and reliable
-- **Good coverage**: Core functionality is thoroughly tested
+### E2E Tests
+- Test complete user workflows
+- Use data attributes for selectors
+- Wait for elements to be ready
+- Test across different browsers
+- Include accessibility testing
+
+### Visual Regression
+- Take screenshots of key UI components
+- Test responsive layouts
+- Update baselines when UI changes intentionally
+- Review visual differences carefully
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **localStorage not mocked**: Ensure test setup is loaded
-2. **Performance tests failing**: May need to adjust timing thresholds
-3. **Type errors**: Ensure TypeScript types are correctly imported
+**E2E tests failing on CI but passing locally**
+- Check for timing issues
+- Increase timeouts if needed
+- Ensure consistent test data
 
-### Debugging Tests
+**Visual regression tests failing**
+- Review screenshot differences
+- Update baseline images if changes are intentional
+- Check for flaky rendering
 
-```bash
-# Run specific test file
-npm test -- calculations.test.ts
+**Unit tests failing**
+- Check for mocked dependencies
+- Verify test data setup
+- Review test isolation
 
-# Run with verbose output
-npm test -- --reporter=verbose
-
-# Run with UI for debugging
-npm run test:ui
-```
-
-## Future Enhancements
-
-Potential areas for test expansion:
-
-1. **UI Component Tests**: Test Astro components with testing-library
-2. **End-to-End Tests**: Test complete user workflows
-3. **API Tests**: If external APIs are added
-4. **Accessibility Tests**: Ensure UI is accessible
-5. **Visual Regression Tests**: Ensure UI doesn't break visually
-
-## Conclusion
-
-The comprehensive test suite ensures that the Energy Price Comparison Tool is reliable, maintainable, and performs well. The tests cover all critical functionality while remaining fast and easy to run.
+### Getting Help
+- Check test output for detailed error messages
+- Use debug mode for E2E tests
+- Review CI logs for environment issues
+- Consult Playwright and Vitest documentation
