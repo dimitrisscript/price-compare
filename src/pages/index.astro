@@ -391,6 +391,9 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
       const calculations = calculateAllPrices(allVendors, kwh);
       updateTable(kwh, calculations);
     });
+    
+    // Set up click handlers after updating tables
+    setupPlanNameClickHandlers();
   }
 
   // Update specific table
@@ -402,7 +405,14 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
       <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 ${index === 0 ? 'bg-green-50 dark:bg-green-900/20' : ''}">
         <td class="py-2 px-3 text-gray-900 dark:text-white font-medium">${index + 1}</td>
         <td class="py-2 px-3 text-gray-900 dark:text-white">${calc.vendor}</td>
-        <td class="py-2 px-3 text-gray-700 dark:text-gray-300">${calc.plan}</td>
+        <td class="py-2 px-3 text-gray-700 dark:text-gray-300">
+          <button 
+            class="plan-name-clickable text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline cursor-pointer"
+            data-vendor="${calc.vendor}"
+            data-plan="${calc.plan}">
+            ${calc.plan}
+          </button>
+        </td>
         <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${calc.fixedPrice.toFixed(2)}</td>
         <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${calc.kwhPrice.toFixed(4)}</td>
         <td class="py-2 px-3 text-right font-semibold text-gray-900 dark:text-white">€${calc.totalPrice.toFixed(2)}</td>
@@ -495,6 +505,54 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     }
   }
 
+  // Set up plan name click handlers
+  function setupPlanNameClickHandlers() {
+    const planNameButtons = document.querySelectorAll('.plan-name-clickable');
+    
+    planNameButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        const vendor = button.getAttribute('data-vendor');
+        const plan = button.getAttribute('data-plan');
+        
+        if (vendor && plan) {
+          // Open plan ranking accordion
+          const planRankingAccordionTrigger = document.querySelector('.plan-ranking-accordion-trigger');
+          const planRankingAccordion = document.getElementById('plan-ranking-accordion');
+          const planRankingArrow = planRankingAccordionTrigger?.querySelector('svg');
+          
+          if (planRankingAccordionTrigger && planRankingAccordion) {
+            // Expand the accordion if it's not already expanded
+            const isExpanded = planRankingAccordionTrigger.getAttribute('aria-expanded') === 'true';
+            if (!isExpanded) {
+              planRankingAccordionTrigger.setAttribute('aria-expanded', 'true');
+              planRankingAccordion.classList.remove('hidden');
+              planRankingArrow?.classList.add('rotate-180');
+            }
+            
+            // Select the plan in the dropdown
+            const planSelector = document.getElementById('planSelector') as HTMLSelectElement;
+            if (planSelector) {
+              const optionValue = `${vendor}|${plan}`;
+              planSelector.value = optionValue;
+              
+              // Trigger the change event to update the ranking results
+              planSelector.dispatchEvent(new Event('change'));
+            }
+            
+            // Smooth scroll to the plan ranking section
+            setTimeout(() => {
+              planRankingAccordionTrigger.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+              });
+            }, 100); // Small delay to ensure accordion is expanded first
+          }
+        }
+      });
+    });
+  }
+
   // Initialize
   document.addEventListener('DOMContentLoaded', () => {
     // Set up form submission
@@ -533,5 +591,8 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     updateAllTables();
     updateCustomVendorsList();
     updatePlanSelector();
+    
+    // Set up plan name click handlers
+    setupPlanNameClickHandlers();
   });
 </script>
