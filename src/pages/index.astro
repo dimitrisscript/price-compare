@@ -58,14 +58,14 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
       </div>
     </div>
 
-    <!-- Plan Ranking Analysis Section -->
+    <!-- Plan Analysis Section -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
       <button 
         class="plan-ranking-accordion-trigger w-full px-4 py-3 text-left bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors flex justify-between items-center cursor-pointer"
         data-target="plan-ranking-accordion"
         aria-expanded="false"
         aria-controls="plan-ranking-accordion">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white" data-translate="planRankingAnalysis">🏆 Plan Ranking Analysis</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white" data-translate="planRankingAnalysis">🏆 Plan Analysis</h2>
         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
@@ -162,7 +162,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
               data-target={`accordion-${kwh}`}
               aria-expanded="false"
               aria-controls={`accordion-${kwh}`}>
-              <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200" data-translate="consumptionLevel">{kwh} kWh Consumption</h3>
+              <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200" data-kwh={kwh}>{kwh} kWh Consumption</h3>
               <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
@@ -222,6 +222,14 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
       const key = element.getAttribute('data-translate-placeholder');
       if (key && element instanceof HTMLInputElement) {
         element.placeholder = getTranslation(key as any);
+      }
+    });
+
+    // Update consumption level elements (preserve kWh numbers)
+    document.querySelectorAll('[data-kwh]').forEach(element => {
+      const kwh = element.getAttribute('data-kwh');
+      if (kwh) {
+        element.textContent = `${kwh} ${getTranslation('consumptionLevel')}`;
       }
     });
   }

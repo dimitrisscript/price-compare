@@ -6,7 +6,7 @@ A comprehensive tool for comparing electricity prices across different vendors a
 
 - **Price Comparison**: Compare electricity prices across multiple vendors at different consumption levels
 - **Vendor Management**: Add custom vendors with their pricing plans
-- **Plan Ranking Analysis**: Analyze how specific plans rank across different consumption levels
+- **Plan Analysis**: Analyze how specific plans rank across different consumption levels
 - **Interactive UI**: Expandable sections with modern, responsive design
 - **Dark Mode Support**: Automatic dark/light mode detection
 - **Local Storage**: Save custom vendors for future sessions
@@ -160,7 +160,7 @@ The application uses the following translation keys:
 - `description` - Page description
 - `vendorManagement` - Vendor management section
 - `addCustomVendor` - Add custom vendor button
-- `planRankingAnalysis` - Plan ranking analysis section
+- `planRankingAnalysis` - Plan analysis section
 - `priceComparison` - Price comparison section
 - And many more...
 
