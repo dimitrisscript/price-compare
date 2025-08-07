@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi, beforeAll, afterAll } from 'vitest';
 
 // Mock localStorage for tests
 const localStorageMock = {
@@ -25,6 +25,16 @@ Object.defineProperty(global, 'window', {
     localStorage: localStorageMock,
   },
   writable: true,
+});
+
+// Suppress console warnings during tests to clean up output
+const originalConsoleWarn = console.warn;
+beforeAll(() => {
+  console.warn = vi.fn();
+});
+
+afterAll(() => {
+  console.warn = originalConsoleWarn;
 });
 
 // Reset mocks before each test
