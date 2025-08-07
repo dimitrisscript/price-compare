@@ -1,92 +1,195 @@
 # Energy Price Comparison Tool
 
-A modern web application built with Astro and Tailwind CSS for comparing electricity prices across different vendors and consumption levels.
+A comprehensive tool for comparing electricity prices across different vendors and consumption levels. Built with Astro and TypeScript.
 
 ## Features
 
-- **Price Comparison**: Compare electricity prices for consumption levels from 100kWh to 1500kWh
-- **Vendor Management**: Add, remove, and edit custom vendors
-- **Persistent Storage**: Custom vendors are saved in browser localStorage
-- **Ranked Results**: Vendors are automatically ranked by price (ascending)
-- **Responsive Design**: Beautiful, modern UI that works on all devices
-- **Dark Mode**: Toggle between light and dark themes with persistent preference
-- **Accordion Interface**: Collapsible consumption level tables for better organization
-- **Expand/Collapse Controls**: Buttons to expand or collapse all sections at once
-- **Best Price Highlighting**: Cheapest options are highlighted in green
+- **Price Comparison**: Compare electricity prices across multiple vendors at different consumption levels
+- **Vendor Management**: Add custom vendors with their pricing plans
+- **Plan Ranking Analysis**: Analyze how specific plans rank across different consumption levels
+- **Interactive UI**: Expandable sections with modern, responsive design
+- **Dark Mode Support**: Automatic dark/light mode detection
+- **Local Storage**: Save custom vendors for future sessions
 
-## Development
+## Getting Started
+
+### Prerequisites
+
+- Node.js (version 18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd price-compare
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:4321`
+
+## Available Scripts
+
+- `npm run dev` - Start the development server
+- `npm run build` - Build the project for production
+- `npm run preview` - Preview the production build
+- `npm run test` - Run tests in watch mode
+- `npm run test:ui` - Run tests with UI interface
+- `npm run test:run` - Run tests once
+- `npm run test:coverage` - Run tests with coverage report
+
+## Testing
+
+The project includes comprehensive tests for all core functionality:
+
+### Test Structure
+
+- **Unit Tests** (`src/test/calculations.test.ts`): Test individual utility functions
+- **Type Tests** (`src/test/types.test.ts`): Verify TypeScript type definitions
+- **Integration Tests** (`src/test/integration.test.ts`): Test complete workflows
+- **Utility Tests** (`src/test/utils.test.ts`): Test edge cases and performance
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests once
+npm run test:run
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Test Coverage
+
+The test suite covers:
+
+- ✅ Price calculation functions
+- ✅ CSV data parsing
+- ✅ Local storage operations
+- ✅ Type definitions
+- ✅ Edge cases and error handling
+- ✅ Performance considerations
+- ✅ Integration workflows
+
+## Project Structure
+
+```
+src/
+├── layouts/
+│   └── Layout.astro          # Main layout component
+├── pages/
+│   └── index.astro           # Main application page
+├── styles/
+│   └── global.css            # Global styles
+├── types/
+│   └── vendor.ts             # TypeScript type definitions
+├── utils/
+│   └── calculations.ts       # Core calculation functions
+└── test/                     # Test files
+    ├── setup.ts              # Test setup and mocks
+    ├── calculations.test.ts  # Unit tests
+    ├── types.test.ts         # Type tests
+    ├── integration.test.ts   # Integration tests
+    └── utils.test.ts         # Utility tests
+```
+
+## Core Functions
+
+### Price Calculations
+
+- `calculatePrice(vendor, kwh)`: Calculate total price for a vendor at given consumption
+- `calculateAllPrices(vendors, kwh)`: Calculate prices for all vendors and sort by price
+- `calculateAllConsumptionLevels(vendors)`: Calculate prices for all consumption levels
+
+### Data Management
+
+- `getDefaultVendors()`: Get predefined vendor list
+- `saveVendorsToStorage(vendors)`: Save custom vendors to localStorage
+- `loadVendorsFromStorage()`: Load custom vendors from localStorage
+- `parseCSVData(csvText)`: Parse CSV data into vendor objects
+
+## Data Format
+
+### Vendor Object
+```typescript
+interface Vendor {
+  vendor: string;      // Vendor name
+  plan: string;        // Plan name
+  fixedPrice: number;  // Fixed monthly price (€)
+  kwhPrice: number;    // Price per kWh (€)
+  link: string;        // Vendor website URL
+}
+```
+
+### Price Calculation Object
+```typescript
+interface PriceCalculation {
+  vendor: string;      // Vendor name
+  plan: string;        // Plan name
+  fixedPrice: number;  // Fixed monthly price (€)
+  kwhPrice: number;    // Price per kWh (€)
+  totalPrice: number;  // Calculated total price (€)
+  link: string;        // Vendor website URL
+}
+```
+
+## Consumption Levels
+
+The application supports consumption levels from 100 kWh to 1500 kWh in 100 kWh increments:
+
+- 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500 kWh
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Run the test suite
+6. Submit a pull request
+
+## Testing Guidelines
+
+When adding new features:
+
+1. **Write unit tests** for new utility functions
+2. **Add integration tests** for new workflows
+3. **Test edge cases** and error conditions
+4. **Ensure type safety** with TypeScript
+5. **Maintain test coverage** above 90%
+
+### Running Tests Locally
 
 ```bash
 # Install dependencies
 npm install
 
-# Start development server
-npm run dev
+# Run tests in watch mode
+npm test
 
-# Build for production
-npm run build
+# Run tests with coverage
+npm run test:coverage
+
+# Run specific test file
+npm test -- calculations.test.ts
 ```
 
-## Deployment
+## License
 
-This app is configured for deployment on Netlify. Simply connect your repository to Netlify and it will automatically build and deploy.
-
-### Manual Deployment
-
-1. Build the project: `npm run build`
-2. Deploy the `dist` folder to your hosting provider
-
-## Data Structure
-
-The app uses the following data structure for vendors:
-
-```typescript
-interface Vendor {
-  vendor: string;
-  plan: string;
-  fixedPrice: number;
-  kwhPrice: number;
-  link: string;
-}
-```
-
-## Default Vendors
-
-The app comes with 24 pre-configured vendors from the Greek electricity market, including:
-- ΔΕΗ (DEH)
-- ΖΕΝΙΘ (Zenith)
-- Elpedison
-- nrg
-- Volton
-- ΗΡΩΝ (Heron)
-- Ελίν (Elin)
-- Eunice
-- Protergia
-
-## User Interface Features
-
-### Dark Mode
-- Toggle between light and dark themes using the sun/moon icon
-- Theme preference is saved in localStorage
-- All UI elements adapt to the selected theme
-
-### Accordion Tables
-- All consumption levels start collapsed by default for a clean interface
-- Click individual headers to expand/collapse specific sections
-- Use "Expand All" button to open all sections at once
-- Use "Collapse All" button to close all sections
-- Smooth animations and visual feedback with rotating arrow icons
-- Proper accessibility with ARIA attributes
-
-### Vendor Management
-- Add custom vendors with form validation
-- Remove custom vendors with one click
-- All changes persist between sessions
-- Original vendors cannot be deleted
-
-## Technologies Used
-
-- **Astro**: Modern static site generator
-- **Tailwind CSS**: Utility-first CSS framework with dark mode support
-- **TypeScript**: Type-safe JavaScript
-- **Local Storage**: Browser-based data persistence
+This project is licensed under the MIT License - see the LICENSE file for details.

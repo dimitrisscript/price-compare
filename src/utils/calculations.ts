@@ -31,13 +31,29 @@ export function parseCSVData(csvText: string): Vendor[] {
   const lines = csvText.trim().split('\n');
   const headers = lines[0].split(',');
   
+  if (headers.length < 5) {
+    throw new Error('Invalid CSV format: expected at least 5 columns');
+  }
+  
   return lines.slice(1).map(line => {
     const values = line.split(',');
+    
+    if (values.length < 5) {
+      throw new Error('Invalid CSV format: expected at least 5 columns');
+    }
+    
+    const fixedPrice = parseFloat(values[2].trim());
+    const kwhPrice = parseFloat(values[3].trim());
+    
+    if (isNaN(fixedPrice) || isNaN(kwhPrice)) {
+      throw new Error('Invalid numeric values in CSV');
+    }
+    
     return {
       vendor: values[0].trim(),
       plan: values[1].trim(),
-      fixedPrice: parseFloat(values[2].trim()),
-      kwhPrice: parseFloat(values[3].trim()),
+      fixedPrice,
+      kwhPrice,
       link: values[4].trim()
     };
   });
@@ -45,14 +61,23 @@ export function parseCSVData(csvText: string): Vendor[] {
 
 export function saveVendorsToStorage(vendors: Vendor[]): void {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('customVendors', JSON.stringify(vendors));
+    try {
+      localStorage.setItem('customVendors', JSON.stringify(vendors));
+    } catch (error) {
+      console.warn('Failed to save vendors to localStorage:', error);
+    }
   }
 }
 
 export function loadVendorsFromStorage(): Vendor[] {
   if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem('customVendors');
-    return stored ? JSON.parse(stored) : [];
+    try {
+      const stored = localStorage.getItem('customVendors');
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.warn('Failed to load vendors from localStorage:', error);
+      return [];
+    }
   }
   return [];
 }
