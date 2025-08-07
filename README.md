@@ -10,6 +10,8 @@ A comprehensive tool for comparing electricity prices across different vendors a
 - **Interactive UI**: Expandable sections with modern, responsive design
 - **Dark Mode Support**: Automatic dark/light mode detection
 - **Local Storage**: Save custom vendors for future sessions
+- **Internationalization**: Multi-language support (English and Greek)
+- **Language Selection**: Easy language switching with persistent preferences
 
 ## Getting Started
 
@@ -37,6 +39,26 @@ npm run dev
 ```
 
 4. Open your browser and navigate to `http://localhost:4321`
+
+## Language Support
+
+The application supports multiple languages:
+
+- **English** (default)
+- **Greek** (Ελληνικά)
+
+### Language Selection
+
+- Use the language selector in the header to switch between languages
+- Language preference is saved in localStorage and persists across sessions
+- All UI elements, including form placeholders and dynamic content, are translated
+
+### Supported Languages
+
+| Language | Code | Status |
+|----------|------|--------|
+| English | `en` | ✅ Complete |
+| Greek | `el` | ✅ Complete |
 
 ## Available Scripts
 
@@ -91,6 +113,8 @@ The test suite covers:
 
 ```
 src/
+├── i18n/
+│   └── translations.ts        # Internationalization translations
 ├── layouts/
 │   └── Layout.astro          # Main layout component
 ├── pages/
@@ -109,6 +133,37 @@ src/
     └── utils.test.ts         # Utility tests
 ```
 
+## Internationalization
+
+The application uses a custom internationalization system:
+
+### Translation System
+
+- **Translation Keys**: All text content is keyed for easy translation
+- **Dynamic Updates**: UI updates automatically when language changes
+- **Persistent Settings**: Language preference is saved in localStorage
+- **Fallback Support**: Falls back to English if translation is missing
+
+### Adding New Languages
+
+To add a new language:
+
+1. Add the language code and translations to `src/i18n/translations.ts`
+2. Update the language selector in `src/layouts/Layout.astro`
+3. Test the new language thoroughly
+
+### Translation Keys
+
+The application uses the following translation keys:
+
+- `title` - Main page title
+- `description` - Page description
+- `vendorManagement` - Vendor management section
+- `addCustomVendor` - Add custom vendor button
+- `planRankingAnalysis` - Plan ranking analysis section
+- `priceComparison` - Price comparison section
+- And many more...
+
 ## Core Functions
 
 ### Price Calculations
@@ -123,6 +178,12 @@ src/
 - `saveVendorsToStorage(vendors)`: Save custom vendors to localStorage
 - `loadVendorsFromStorage()`: Load custom vendors from localStorage
 - `parseCSVData(csvText)`: Parse CSV data into vendor objects
+
+### Internationalization
+
+- `getTranslation(key)`: Get translated text for a given key
+- `getCurrentLanguage()`: Get the currently selected language
+- `setLanguage(language)`: Set the language preference
 
 ## Data Format
 

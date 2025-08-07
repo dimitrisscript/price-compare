@@ -21,9 +21,20 @@ const { title, description = "Energy Price Comparison Tool" } = Astro.props;
     <div class="container mx-auto px-4 py-8">
       <header class="text-center mb-8">
         <div class="mb-6">
-          <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">⚡ Energy Price Comparison</h1>
+          <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2" id="main-title">⚡ Energy Price Comparison</h1>
         </div>
-        <p class="text-lg text-gray-600 dark:text-gray-300">Compare electricity prices across different vendors and consumption levels</p>
+        <p class="text-lg text-gray-600 dark:text-gray-300" id="main-description">Compare electricity prices across different vendors and consumption levels</p>
+        
+        <!-- Language Selector -->
+        <div class="mt-6 flex justify-center">
+          <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-lg shadow-md px-4 py-2">
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300" id="language-label">Language</span>
+            <select id="language-selector" class="ml-2 px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+              <option value="en">English</option>
+              <option value="el">Ελληνικά</option>
+            </select>
+          </div>
+        </div>
       </header>
       <slot />
     </div>
@@ -35,6 +46,57 @@ const { title, description = "Energy Price Comparison Tool" } = Astro.props;
 </style>
 
 <script>
-  // Automatic theme detection - no manual toggle needed
-  // The theme will automatically follow the user's system preference
+  import { getCurrentLanguage, setLanguage, getTranslation } from '../i18n/translations';
+
+  // Initialize language
+  function initializeLanguage() {
+    const languageSelector = document.getElementById('language-selector') as HTMLSelectElement;
+    const currentLang = getCurrentLanguage();
+    
+    if (languageSelector) {
+      languageSelector.value = currentLang;
+      updatePageContent();
+    }
+  }
+
+  // Update page content based on selected language
+  function updatePageContent() {
+    const mainTitle = document.getElementById('main-title');
+    const mainDescription = document.getElementById('main-description');
+    const languageLabel = document.getElementById('language-label');
+    
+    if (mainTitle) {
+      mainTitle.textContent = `⚡ ${getTranslation('title')}`;
+    }
+    
+    if (mainDescription) {
+      mainDescription.textContent = getTranslation('description');
+    }
+    
+    if (languageLabel) {
+      languageLabel.textContent = getTranslation('languageSelect');
+    }
+  }
+
+  // Handle language change
+  function handleLanguageChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const newLanguage = target.value;
+    
+    setLanguage(newLanguage);
+    updatePageContent();
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: newLanguage } }));
+  }
+
+  // Initialize when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeLanguage();
+    
+    const languageSelector = document.getElementById('language-selector');
+    if (languageSelector) {
+      languageSelector.addEventListener('change', handleLanguageChange);
+    }
+  });
 </script> 

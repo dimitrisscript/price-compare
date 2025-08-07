@@ -12,7 +12,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
         data-target="vendor-accordion"
         aria-expanded="false"
         aria-controls="vendor-accordion">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">📊 Vendor Management</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white" data-translate="vendorManagement">📊 Vendor Management</h2>
         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
@@ -24,30 +24,31 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
         <div class="p-4">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
-              <h3 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-2">Add Custom Vendor</h3>
+              <h3 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-2" data-translate="addCustomVendor">Add Custom Vendor</h3>
               <form id="vendorForm" class="space-y-2">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <input type="text" id="vendorName" placeholder="Vendor Name" required
+                  <input type="text" id="vendorName" data-translate-placeholder="vendorName" placeholder="Vendor Name" required
                     class="w-full px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-sm">
-                  <input type="text" id="planName" placeholder="Plan Name" required
+                  <input type="text" id="planName" data-translate-placeholder="planName" placeholder="Plan Name" required
                     class="w-full px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-sm">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-                  <input type="number" id="fixedPrice" placeholder="Fixed Price (€)" step="0.01" required
+                  <input type="number" id="fixedPrice" data-translate-placeholder="fixedPrice" placeholder="Fixed Price (€)" step="0.01" required
                     class="w-full px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-sm">
-                  <input type="number" id="kwhPrice" placeholder="kWh Price (€)" step="0.0001" required
+                  <input type="number" id="kwhPrice" data-translate-placeholder="kwhPrice" placeholder="kWh Price (€)" step="0.0001" required
                     class="w-full px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-sm">
-                  <input type="url" id="vendorLink" placeholder="Link (optional)"
+                  <input type="url" id="vendorLink" data-translate-placeholder="link" placeholder="Link (optional)"
                     class="w-full px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-sm">
                 </div>
                 <button type="submit" 
-                  class="w-full bg-blue-600 dark:bg-blue-500 text-white py-1.5 px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors cursor-pointer text-sm">
+                  class="w-full bg-blue-600 dark:bg-blue-500 text-white py-1.5 px-4 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors cursor-pointer text-sm"
+                  data-translate="addVendor">
                   Add Vendor
                 </button>
               </form>
             </div>
             <div>
-              <h3 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-2">Custom Vendors</h3>
+              <h3 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-2" data-translate="customVendors">Custom Vendors</h3>
               <div id="customVendorsList" class="space-y-1 max-h-32 overflow-y-auto">
                 <!-- Custom vendors will be populated here -->
               </div>
@@ -64,7 +65,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
         data-target="plan-ranking-accordion"
         aria-expanded="false"
         aria-controls="plan-ranking-accordion">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">🏆 Plan Ranking Analysis</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white" data-translate="planRankingAnalysis">🏆 Plan Ranking Analysis</h2>
         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
         </svg>
@@ -75,33 +76,36 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
         aria-labelledby="plan-ranking-accordion">
         <div class="p-4">
           <div class="mb-4">
-            <label for="planSelector" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label for="planSelector" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-translate="selectPlanToAnalyze">
               Select a plan to analyze its ranking across consumption levels:
             </label>
             <select id="planSelector" 
               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm">
-              <option value="">Choose a plan...</option>
+              <option value="" data-translate="choosePlan">Choose a plan...</option>
             </select>
           </div>
           
           <div id="planRankingResults" class="hidden">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Ranking Analysis for <span id="selectedPlanName" class="text-blue-600 dark:text-blue-400"></span></h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <span data-translate="rankingAnalysisFor">Ranking Analysis for</span> 
+              <span id="selectedPlanName" class="text-blue-600 dark:text-blue-400"></span>
+            </h3>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <!-- Ranking Table -->
               <div>
-                <h4 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-3">Ranking by Consumption Level</h4>
+                <h4 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-3" data-translate="rankingByConsumptionLevel">Ranking by Consumption Level</h4>
                 <div class="overflow-x-auto">
                   <table class="w-full text-sm">
-                                         <thead>
-                       <tr class="bg-gray-50 dark:bg-gray-700">
-                         <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Consumption (kWh)</th>
-                         <th class="text-center py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Rank</th>
-                         <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Total Price</th>
-                         <th class="text-center py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Best Plan</th>
-                         <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Best Plan Price</th>
-                       </tr>
-                     </thead>
+                    <thead>
+                      <tr class="bg-gray-50 dark:bg-gray-700">
+                        <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="consumption">Consumption (kWh)</th>
+                        <th class="text-center py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="rank">Rank</th>
+                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="totalPrice">Total Price</th>
+                        <th class="text-center py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="bestPlan">Best Plan</th>
+                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="bestPlanPrice">Best Plan Price</th>
+                      </tr>
+                    </thead>
                     <tbody id="planRankingTable" class="divide-y divide-gray-200 dark:divide-gray-700">
                       <!-- Ranking data will be populated here -->
                     </tbody>
@@ -111,22 +115,22 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
               
               <!-- Summary Stats -->
               <div>
-                <h4 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-3">Summary Statistics</h4>
+                <h4 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-3" data-translate="summaryStatistics">Summary Statistics</h4>
                 <div class="space-y-3">
                   <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Average Rank</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400" data-translate="averageRank">Average Rank</div>
                     <div id="averageRank" class="text-lg font-semibold text-gray-900 dark:text-white">-</div>
                   </div>
                   <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Best Rank</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400" data-translate="bestRank">Best Rank</div>
                     <div id="bestRank" class="text-lg font-semibold text-green-600 dark:text-green-400">-</div>
                   </div>
                   <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Worst Rank</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400" data-translate="worstRank">Worst Rank</div>
                     <div id="worstRank" class="text-lg font-semibold text-red-600 dark:text-red-400">-</div>
                   </div>
                   <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Times Ranked #1</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400" data-translate="timesRankedFirst">Times Ranked #1</div>
                     <div id="timesFirst" class="text-lg font-semibold text-blue-600 dark:text-blue-400">-</div>
                   </div>
                 </div>
@@ -140,12 +144,12 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     <!-- Price Comparison Tables -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">💰 Price Comparison</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white" data-translate="priceComparison">💰 Price Comparison</h2>
         <div class="flex gap-2">
-          <button id="expandAll" class="px-4 py-2 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 transition-colors text-sm cursor-pointer">
+          <button id="expandAll" class="px-4 py-2 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 transition-colors text-sm cursor-pointer" data-translate="expandAll">
             Expand All
           </button>
-          <button id="collapseAll" class="px-4 py-2 bg-gray-600 dark:bg-gray-500 text-white rounded-md hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm cursor-pointer">
+          <button id="collapseAll" class="px-4 py-2 bg-gray-600 dark:bg-gray-500 text-white rounded-md hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-sm cursor-pointer" data-translate="collapseAll">
             Collapse All
           </button>
         </div>
@@ -158,7 +162,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
               data-target={`accordion-${kwh}`}
               aria-expanded="false"
               aria-controls={`accordion-${kwh}`}>
-              <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200">{kwh} kWh Consumption</h3>
+              <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200" data-translate="consumptionLevel">{kwh} kWh Consumption</h3>
               <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
@@ -172,13 +176,13 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
                   <table class="w-full text-sm">
                     <thead>
                       <tr class="bg-gray-50 dark:bg-gray-700">
-                        <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Rank</th>
+                        <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="rank">Rank</th>
                         <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Vendor</th>
                         <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Plan</th>
-                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Fixed Price</th>
-                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300">kWh Price</th>
-                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Total Price</th>
-                        <th class="text-center py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Link</th>
+                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="fixedPrice">Fixed Price</th>
+                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="kwhPrice">kWh Price</th>
+                        <th class="text-right py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="totalPrice">Total Price</th>
+                        <th class="text-center py-2 px-3 font-medium text-gray-700 dark:text-gray-300" data-translate="visit">Link</th>
                       </tr>
                     </thead>
                     <tbody id={`table-${kwh}`} class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -197,11 +201,31 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
 
 <script>
   import { getDefaultVendors, calculateAllPrices, saveVendorsToStorage, loadVendorsFromStorage } from '../utils/calculations';
+  import { getTranslation } from '../i18n/translations';
   import type { Vendor, PriceCalculation } from '../types/vendor';
 
   // Initialize vendors
   let allVendors: Vendor[] = [...getDefaultVendors(), ...loadVendorsFromStorage()];
   
+  // Translation update function
+  function updateTranslations() {
+    // Update all elements with data-translate attribute
+    document.querySelectorAll('[data-translate]').forEach(element => {
+      const key = element.getAttribute('data-translate');
+      if (key) {
+        element.textContent = getTranslation(key as any);
+      }
+    });
+
+    // Update all elements with data-translate-placeholder attribute
+    document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+      const key = element.getAttribute('data-translate-placeholder');
+      if (key && element instanceof HTMLInputElement) {
+        element.placeholder = getTranslation(key as any);
+      }
+    });
+  }
+
   // Accordion functionality
   function initAccordions() {
     const accordionTriggers = document.querySelectorAll('.accordion-trigger');
@@ -250,7 +274,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     if (!planSelector) return;
 
     // Clear existing options except the first one
-    planSelector.innerHTML = '<option value="">Choose a plan...</option>';
+    planSelector.innerHTML = `<option value="" data-translate="choosePlan">${getTranslation('choosePlan')}</option>`;
     
     // Add all vendors and plans
     allVendors.forEach(vendor => {
@@ -310,37 +334,37 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
       return;
     }
     
-         // Update plan name
-     const selectedVendorData = allVendors.find(v => v.vendor === selectedVendor && v.plan === selectedPlan);
-     const planLink = selectedVendorData?.link || '';
-     
-     if (planLink) {
-       selectedPlanName.innerHTML = `<a href="${planLink}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">${selectedVendor} - ${selectedPlan}</a>`;
-     } else {
-       selectedPlanName.textContent = `${selectedVendor} - ${selectedPlan}`;
-     }
+    // Update plan name
+    const selectedVendorData = allVendors.find(v => v.vendor === selectedVendor && v.plan === selectedPlan);
+    const planLink = selectedVendorData?.link || '';
     
-         // Update ranking table
-     rankingTable.innerHTML = rankings.map(ranking => `
-       <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-         <td class="py-2 px-3 text-gray-900 dark:text-white font-medium">${ranking.kwh} kWh</td>
-         <td class="py-2 px-3 text-center">
-           <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium ${
-             ranking.rank === 1 ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-             ranking.rank <= 3 ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-             ranking.rank <= 5 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-             'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-           }">${ranking.rank}</span>
-         </td>
-         <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${ranking.totalPrice.toFixed(2)}</td>
-         <td class="py-2 px-3 text-center text-sm text-gray-600 dark:text-gray-400">
-           ${ranking.bestPlanLink ? 
-             `<a href="${ranking.bestPlanLink}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">${ranking.bestPlan}</a>` : 
-             ranking.bestPlan}
-         </td>
-         <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${ranking.bestPlanPrice.toFixed(2)}</td>
-       </tr>
-     `).join('');
+    if (planLink) {
+      selectedPlanName.innerHTML = `<a href="${planLink}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">${selectedVendor} - ${selectedPlan}</a>`;
+    } else {
+      selectedPlanName.textContent = `${selectedVendor} - ${selectedPlan}`;
+    }
+    
+    // Update ranking table
+    rankingTable.innerHTML = rankings.map(ranking => `
+      <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+        <td class="py-2 px-3 text-gray-900 dark:text-white font-medium">${ranking.kwh} kWh</td>
+        <td class="py-2 px-3 text-center">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium ${
+            ranking.rank === 1 ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+            ranking.rank <= 3 ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+            ranking.rank <= 5 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+            'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+          }">${ranking.rank}</span>
+        </td>
+        <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${ranking.totalPrice.toFixed(2)}</td>
+        <td class="py-2 px-3 text-center text-sm text-gray-600 dark:text-gray-400">
+          ${ranking.bestPlanLink ? 
+            `<a href="${ranking.bestPlanLink}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">${ranking.bestPlan}</a>` : 
+            ranking.bestPlan}
+        </td>
+        <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${ranking.bestPlanPrice.toFixed(2)}</td>
+      </tr>
+    `).join('');
     
     // Update summary statistics
     const ranks = rankings.map(r => r.rank);
@@ -417,7 +441,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
         <td class="py-2 px-3 text-right text-gray-700 dark:text-gray-300">€${calc.kwhPrice.toFixed(4)}</td>
         <td class="py-2 px-3 text-right font-semibold text-gray-900 dark:text-white">€${calc.totalPrice.toFixed(2)}</td>
         <td class="py-2 px-3 text-center">
-          ${calc.link ? `<a href="${calc.link}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">Visit</a>` : '-'}
+          ${calc.link ? `<a href="${calc.link}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline">${getTranslation('visit')}</a>` : '-'}
         </td>
       </tr>
     `).join('');
@@ -433,11 +457,11 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
       <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded-md">
         <div class="flex-1">
           <div class="font-medium text-gray-900 dark:text-white text-sm">${vendor.vendor} - ${vendor.plan}</div>
-          <div class="text-xs text-gray-600 dark:text-gray-400">Fixed: €${vendor.fixedPrice} | kWh: €${vendor.kwhPrice}</div>
+          <div class="text-xs text-gray-600 dark:text-gray-400">${getTranslation('fixedPrice')}: €${vendor.fixedPrice} | ${getTranslation('kwhPrice')}: €${vendor.kwhPrice}</div>
         </div>
         <button onclick="removeCustomVendor(${index})" 
           class="ml-2 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-xs font-medium cursor-pointer">
-          Remove
+          ${getTranslation('remove')}
         </button>
       </div>
     `).join('');
@@ -594,5 +618,16 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     
     // Set up plan name click handlers
     setupPlanNameClickHandlers();
+
+    // Listen for language changes
+    window.addEventListener('languageChanged', () => {
+      updateTranslations();
+      updatePlanSelector();
+      updateCustomVendorsList();
+      updateAllTables();
+    });
+
+    // Initial translation update
+    updateTranslations();
   });
 </script>
