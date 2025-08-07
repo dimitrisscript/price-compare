@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   calculatePrice,
   calculateAllPrices,
@@ -232,7 +232,7 @@ Vendor A,Plan A,5.0`;
 
     describe('loadVendorsFromStorage', () => {
       it('should load vendors from localStorage', () => {
-        localStorage.getItem.mockReturnValue(JSON.stringify(mockVendors));
+        (localStorage.getItem as any).mockReturnValue(JSON.stringify(mockVendors));
         
         const result = loadVendorsFromStorage();
         
@@ -241,7 +241,7 @@ Vendor A,Plan A,5.0`;
       });
 
       it('should return empty array when no data in storage', () => {
-        localStorage.getItem.mockReturnValue(null);
+        (localStorage.getItem as any).mockReturnValue(null);
         
         const result = loadVendorsFromStorage();
         
@@ -249,11 +249,22 @@ Vendor A,Plan A,5.0`;
       });
 
       it('should return empty array when invalid JSON in storage', () => {
-        localStorage.getItem.mockReturnValue('invalid json');
+        (localStorage.getItem as any).mockReturnValue('invalid json');
         
         const result = loadVendorsFromStorage();
         
         expect(result).toEqual([]);
+      });
+
+      it('should handle localStorage errors in loadVendorsFromStorage', () => {
+        // Mock localStorage to throw an error
+        (localStorage.getItem as any).mockImplementation(() => {
+          throw new Error('Storage error');
+        });
+        
+        // Should not throw and should return empty array
+        expect(() => loadVendorsFromStorage()).not.toThrow();
+        expect(loadVendorsFromStorage()).toEqual([]);
       });
     });
   });
