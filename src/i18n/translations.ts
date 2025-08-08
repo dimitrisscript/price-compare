@@ -89,7 +89,7 @@ export const translations: Record<string, Translations> = {
     addCustomVendor: "Προσθήκη Προσαρμοσμένου Παρόχου",
     vendorName: "Όνομα Παρόχου",
     planName: "Όνομα Προγράμματος",
-    fixedPrice: "Σταθερή Τιμή (€)",
+    fixedPrice: "Πάγιο (€)",
     kwhPrice: "Τιμή kWh (€)",
     link: "Σύνδεσμος (προαιρετικό)",
     addVendor: "Προσθήκη Παρόχου",
