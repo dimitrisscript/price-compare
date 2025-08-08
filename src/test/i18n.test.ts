@@ -57,7 +57,7 @@ describe('i18n/translations', () => {
         'bestPlan', 'bestPlanPrice', 'summaryStatistics', 'averageRank',
         'bestRank', 'worstRank', 'timesRankedFirst', 'priceComparison',
         'expandAll', 'collapseAll', 'consumptionLevel', 'visit',
-        'languageSelect', 'english', 'greek'
+        'languageSelect', 'english', 'greek', 'vendor', 'plan'
       ];
 
       requiredKeys.forEach(key => {
@@ -75,7 +75,7 @@ describe('i18n/translations', () => {
         'bestPlan', 'bestPlanPrice', 'summaryStatistics', 'averageRank',
         'bestRank', 'worstRank', 'timesRankedFirst', 'priceComparison',
         'expandAll', 'collapseAll', 'consumptionLevel', 'visit',
-        'languageSelect', 'english', 'greek'
+        'languageSelect', 'english', 'greek', 'vendor', 'plan'
       ];
 
       requiredKeys.forEach(key => {
@@ -178,7 +178,7 @@ describe('i18n/translations', () => {
         'bestPlan', 'bestPlanPrice', 'summaryStatistics', 'averageRank',
         'bestRank', 'worstRank', 'timesRankedFirst', 'priceComparison',
         'expandAll', 'collapseAll', 'consumptionLevel', 'visit',
-        'languageSelect', 'english', 'greek'
+        'languageSelect', 'english', 'greek', 'vendor', 'plan'
       ];
 
       keys.forEach(key => {
@@ -200,6 +200,53 @@ describe('i18n/translations', () => {
       // Switch back to English
       setLanguage('en');
       expect(getTranslation('title')).toBe(translations.en.title);
+    });
+  });
+
+  describe('Table header translations', () => {
+    it('should translate "vendor" correctly in both languages', () => {
+      // Test English
+      expect(getTranslation('vendor')).toBe('Vendor');
+      
+      // Test Greek
+      mockLocalStorage['language'] = 'el';
+      expect(getTranslation('vendor')).toBe('Πάροχος');
+    });
+
+    it('should translate "plan" correctly in both languages', () => {
+      // Test English
+      mockLocalStorage['language'] = 'en';
+      expect(getTranslation('plan')).toBe('Plan');
+      
+      // Test Greek
+      mockLocalStorage['language'] = 'el';
+      expect(getTranslation('plan')).toBe('Πρόγραμμα');
+    });
+
+    it('should maintain consistency when switching languages for table headers', () => {
+      // Start with English
+      mockLocalStorage['language'] = 'en';
+      expect(getTranslation('vendor')).toBe('Vendor');
+      expect(getTranslation('plan')).toBe('Plan');
+      
+      // Switch to Greek
+      mockLocalStorage['language'] = 'el';
+      expect(getTranslation('vendor')).toBe('Πάροχος');
+      expect(getTranslation('plan')).toBe('Πρόγραμμα');
+      
+      // Switch back to English
+      mockLocalStorage['language'] = 'en';
+      expect(getTranslation('vendor')).toBe('Vendor');
+      expect(getTranslation('plan')).toBe('Plan');
+    });
+
+    it('should have appropriate Greek translations for table headers', () => {
+      expect(translations.el.vendor).toBe('Πάροχος');
+      expect(translations.el.plan).toBe('Πρόγραμμα');
+      
+      // Verify they are different from English
+      expect(translations.el.vendor).not.toBe(translations.en.vendor);
+      expect(translations.el.plan).not.toBe(translations.en.plan);
     });
   });
 

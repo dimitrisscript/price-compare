@@ -191,6 +191,55 @@ test.describe('Energy Price Comparison App', () => {
     const disclaimerText = page.locator('#footer-disclaimer');
     await expect(disclaimerText).toBeVisible();
   });
+
+  test('table headers should be properly translated', async ({ page }) => {
+    // Wait for the first consumption level accordion to be available
+    await page.waitForSelector('.accordion-trigger', { timeout: 10000 });
+    
+    // Click on the first consumption level (100 kWh)
+    await page.locator('.accordion-trigger').first().click();
+    
+    // Wait for the table to be populated
+    await page.waitForSelector('table tbody tr', { timeout: 10000 });
+    
+    // Get the first visible table (the one we just opened)
+    const firstTable = page.locator('.accordion-content:not(.hidden) table').first();
+    
+    // Verify that "Vendor" and "Plan" headers have data-translate attributes
+    const vendorHeader = firstTable.locator('thead th[data-translate="vendor"]');
+    const planHeader = firstTable.locator('thead th[data-translate="plan"]');
+    
+    await expect(vendorHeader).toBeVisible();
+    await expect(planHeader).toBeVisible();
+    
+    // Verify the English text is displayed by default
+    await expect(vendorHeader).toHaveText('Vendor');
+    await expect(planHeader).toHaveText('Plan');
+    
+    // Test language switching (if language selector is available)
+    const languageSelector = page.locator('select[name="language"], [data-translate="languageSelect"]');
+    if (await languageSelector.count() > 0) {
+      // Switch to Greek
+      await languageSelector.selectOption('el');
+      
+      // Wait for translations to update
+      await page.waitForTimeout(500);
+      
+      // Verify Greek translations are displayed
+      await expect(vendorHeader).toHaveText('Πάροχος');
+      await expect(planHeader).toHaveText('Πρόγραμμα');
+      
+      // Switch back to English
+      await languageSelector.selectOption('en');
+      
+      // Wait for translations to update
+      await page.waitForTimeout(500);
+      
+      // Verify English text is displayed again
+      await expect(vendorHeader).toHaveText('Vendor');
+      await expect(planHeader).toHaveText('Plan');
+    }
+  });
 });
 
 test.describe('Visual Regression Tests', () => {

@@ -36,6 +36,8 @@ export interface Translations {
   greek: string;
   footerDisclaimer: string;
   lastUpdate: string;
+  vendor: string;
+  plan: string;
 }
 
 export const translations: Record<string, Translations> = {
@@ -76,7 +78,9 @@ export const translations: Record<string, Translations> = {
     english: "English",
     greek: "Greek",
     footerDisclaimer: "This page compares only the fixed (blue) tariffs of providers.",
-    lastUpdate: "Last update: 2025-08-08"
+    lastUpdate: "Last update: 2025-08-08",
+    vendor: "Vendor",
+    plan: "Plan"
   },
   el: {
     title: "Σύγκριση Τιμών Ενέργειας",
@@ -115,7 +119,9 @@ export const translations: Record<string, Translations> = {
     english: "English",
     greek: "Ελληνικά",
     footerDisclaimer: "Αυτή η σελίδα συγκρίνει μόνο τα σταθερά (μπλέ) τιμολόγια παρόχων.",
-    lastUpdate: "Τελευταία ενημέρωση: 2025-08-08"
+    lastUpdate: "Τελευταία ενημέρωση: 2025-08-08",
+    vendor: "Πάροχος",
+    plan: "Πρόγραμμα"
   }
 };
 
