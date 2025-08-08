@@ -38,6 +38,14 @@ const { title, description = "Energy Price Comparison Tool" } = Astro.props;
       </header>
       <slot />
     </div>
+    
+    <!-- Footer -->
+    <footer class="mt-12 py-6 border-t border-gray-200 dark:border-gray-700">
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2" id="footer-last-update" data-translate="lastUpdate">Last update: 2025-08-08</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400" id="footer-disclaimer" data-translate="footerDisclaimer">This page compares only the fixed (blue) tariffs of providers.</p>
+      </div>
+    </footer>
   </body>
 </html>
 

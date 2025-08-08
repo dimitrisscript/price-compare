@@ -5,9 +5,9 @@
  * Run this when you intentionally change the UI and want to update the baselines
  */
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 console.log('🖼️  Updating baseline screenshots for visual regression tests...');
 

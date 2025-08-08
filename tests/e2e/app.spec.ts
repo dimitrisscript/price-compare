@@ -112,15 +112,35 @@ test.describe('Energy Price Comparison App', () => {
   });
 
   test('should handle language switching', async ({ page }) => {
-    // Find language selector (if it exists)
-    const languageSelector = page.locator('select[data-translate="language"]');
+    // Find language selector
+    const languageSelector = page.locator('#language-selector');
     
     if (await languageSelector.isVisible()) {
-      // Switch to a different language
-      await page.selectOption('select[data-translate="language"]', 'es');
+      // Switch to Greek
+      await page.selectOption('#language-selector', 'el');
       
-      // Check that content changed (look for Spanish text)
-      await expect(page.locator('[data-translate="vendorManagement"]')).toContainText('Gestión');
+      // Check that content changed (look for Greek text)
+      await expect(page.locator('[data-translate="vendorManagement"]')).toContainText('Διαχείριση');
+      
+      // Check that footer disclaimer also changed to Greek
+      const disclaimerText = page.locator('#footer-disclaimer');
+      await expect(disclaimerText).toContainText('Αυτή η σελίδα συγκρίνει μόνο τα σταθερά (μπλέ) τιμολόγια παρόχων.');
+      
+      // Check that last update text also changed to Greek
+      const lastUpdateText = page.locator('#footer-last-update');
+      await expect(lastUpdateText).toContainText('Τελευταία ενημέρωση: 2025-08-08');
+      
+      // Switch back to English
+      await page.selectOption('#language-selector', 'en');
+      
+      // Check that content changed back to English
+      await expect(page.locator('[data-translate="vendorManagement"]')).toContainText('Vendor Management');
+      
+      // Check that footer disclaimer also changed back to English
+      await expect(disclaimerText).toContainText('This page compares only the fixed (blue) tariffs of providers.');
+      
+      // Check that last update text also changed back to English
+      await expect(lastUpdateText).toContainText('Last update: 2025-08-08');
     }
   });
 
@@ -135,6 +155,41 @@ test.describe('Energy Price Comparison App', () => {
     // Test mobile navigation
     await page.locator('.vendor-accordion-trigger').click();
     await expect(page.locator('#vendor-accordion')).toBeVisible();
+  });
+
+  test('should display footer with last update and dynamic disclaimer', async ({ page }) => {
+    // Check that footer is present
+    const footer = page.locator('footer');
+    await expect(footer).toBeVisible();
+    
+    // Check last update text
+    const lastUpdateText = page.locator('#footer-last-update');
+    await expect(lastUpdateText).toContainText('Last update: 2025-08-08');
+    
+    // Check disclaimer text (should be in English by default)
+    const disclaimerText = page.locator('#footer-disclaimer');
+    await expect(disclaimerText).toContainText('This page compares only the fixed (blue) tariffs of providers.');
+    
+    // Check that footer has proper styling
+    await expect(footer).toHaveClass(/mt-12/);
+    await expect(footer).toHaveClass(/py-6/);
+    await expect(footer).toHaveClass(/border-t/);
+  });
+
+  test('footer should be visible on mobile devices', async ({ page }) => {
+    // Set mobile viewport
+    await page.setViewportSize({ width: 375, height: 667 });
+    
+    // Check that footer is still visible and properly styled
+    const footer = page.locator('footer');
+    await expect(footer).toBeVisible();
+    
+    // Check that all text is readable on mobile
+    const lastUpdateText = page.locator('#footer-last-update');
+    await expect(lastUpdateText).toBeVisible();
+    
+    const disclaimerText = page.locator('#footer-disclaimer');
+    await expect(disclaimerText).toBeVisible();
   });
 });
 
@@ -199,5 +254,22 @@ test.describe('Visual Regression Tests', () => {
     
     // Take screenshot of mobile layout
     await expect(page).toHaveScreenshot('mobile-layout.png');
+  });
+
+  test('footer should match baseline', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('footer');
+    
+    // Scroll to footer to ensure it's visible
+    await page.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    
+    // Wait a moment for any animations to complete
+    await page.waitForTimeout(1000);
+    
+    // Take screenshot of the footer
+    const footer = page.locator('footer');
+    await expect(footer).toHaveScreenshot('footer-layout.png');
   });
 });
