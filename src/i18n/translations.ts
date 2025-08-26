@@ -12,6 +12,12 @@ export interface Translations {
   addVendor: string;
   customVendors: string;
   remove: string;
+  massImportVendors: string;
+  downloadExampleJson: string;
+  importVendors: string;
+  invalidJson: string;
+  importSuccess: string;
+  importTextareaPlaceholder: string;
   planRankingAnalysis: string;
   selectPlanToAnalyze: string;
   choosePlan: string;
@@ -56,6 +62,12 @@ export const translations: Record<string, Translations> = {
     addVendor: "Add Vendor",
     customVendors: "Custom Vendors",
     remove: "Remove",
+    massImportVendors: "Mass import custom vendors",
+    downloadExampleJson: "Download example JSON",
+    importVendors: "Import",
+    invalidJson: "Invalid JSON. Please paste an array of vendor objects.",
+    importSuccess: "Vendors imported successfully!",
+    importTextareaPlaceholder: "Please download the JSON template below, edit, and paste in your final JSON here to import.",
     planRankingAnalysis: "🏆 Plan Analysis",
     selectPlanToAnalyze: "Select a plan to analyze its ranking across consumption levels:",
     choosePlan: "Choose a plan...",
@@ -98,6 +110,12 @@ export const translations: Record<string, Translations> = {
     addVendor: "Προσθήκη Παρόχου",
     customVendors: "Προσαρμοσμένοι Πάροχοι",
     remove: "Αφαίρεση",
+    massImportVendors: "Μαζική εισαγωγή προσαρμοσμένων παρόχων",
+    downloadExampleJson: "Λήψη παράδειγμα JSON",
+    importVendors: "Εισαγωγή",
+    invalidJson: "Μη έγκυρο JSON. Επικολλήστε έναν πίνακα αντικειμένων παρόχων.",
+    importSuccess: "Οι πάροχοι εισήχθησαν με επιτυχία!",
+    importTextareaPlaceholder: "Κατεβάστε το πρότυπο JSON παρακάτω, επεξεργαστείτε το και επικολλήστε εδώ το τελικό JSON για εισαγωγή.",
     planRankingAnalysis: "🏆 Ανάλυση Προγραμμάτων",
     selectPlanToAnalyze: "Επιλέξτε ένα πρόγραμμα για να αναλύσετε την κατάταξή του σε διαφορετικά επίπεδα κατανάλωσης:",
     choosePlan: "Επιλέξτε πρόγραμμα...",

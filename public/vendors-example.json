@@ -1,0 +1,17 @@
+[
+  {
+    "vendor": "Acme Energy",
+    "plan": "Home Saver 12M",
+    "fixedPrice": 9.9,
+    "kwhPrice": 0.105,
+    "link": "https://acme-energy.example/plans/home-saver-12m"
+  },
+  {
+    "vendor": "Bolt Power",
+    "plan": "Fixed Green",
+    "fixedPrice": 12.5,
+    "kwhPrice": 0.0985,
+    "link": "https://bolt-power.example/plans/fixed-green"
+  }
+]
+
