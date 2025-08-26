@@ -243,6 +243,12 @@ test.describe('Energy Price Comparison App', () => {
 });
 
 test.describe('Visual Regression Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    // Ensure a clean state for visual baselines regardless of previous tests
+    await page.addInitScript(() => {
+      try { localStorage.clear(); } catch (_) {}
+    });
+  });
   test('main page layout should match baseline', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('[data-translate="vendorManagement"]');

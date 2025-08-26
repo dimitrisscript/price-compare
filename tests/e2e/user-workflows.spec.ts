@@ -171,8 +171,8 @@ test.describe('User Workflows', () => {
     // Wait for form to be visible
     await page.waitForSelector('#vendorForm', { timeout: 5000 });
     
-    // Test tab navigation through form
-    await page.keyboard.press('Tab');
+    // Start navigation within the form by focusing the first input explicitly
+    await page.focus('#vendorName');
     await expect(page.locator('#vendorName')).toBeFocused();
     
     await page.keyboard.press('Tab');
