@@ -22,6 +22,10 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
         class="vendor-accordion-content hidden bg-white dark:bg-gray-800"
         aria-labelledby="vendor-accordion">
         <div class="p-4">
+          <div class="mb-3 flex items-center gap-2">
+            <input id="hideNonCustomVendors" type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400">
+            <label for="hideNonCustomVendors" class="text-sm text-gray-800 dark:text-gray-200" data-translate="hideNonCustomVendors">Hide all non-custom vendors</label>
+          </div>
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
               <h3 class="text-base font-medium text-gray-800 dark:text-gray-200 mb-2" data-translate="addCustomVendor">Add Custom Vendor</h3>
@@ -204,8 +208,33 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
   import { getTranslation } from '../i18n/translations';
   import type { Vendor, PriceCalculation } from '../types/vendor';
 
-  // Initialize vendors
-  let allVendors: Vendor[] = [...getDefaultVendors(), ...loadVendorsFromStorage()];
+  // Initialize vendors (computed after DOM is ready)
+  let allVendors: Vendor[] = [];
+
+  function isHideNonCustomEnabled(): boolean {
+    if (typeof window === 'undefined') return false;
+    try {
+      return localStorage.getItem('hideNonCustomVendors') === 'true';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function setHideNonCustomEnabled(value: boolean): void {
+    if (typeof window === 'undefined') return;
+    try {
+      localStorage.setItem('hideNonCustomVendors', value ? 'true' : 'false');
+    } catch (_) {}
+  }
+
+  function recomputeAllVendors(): void {
+    const custom = loadVendorsFromStorage();
+    if (isHideNonCustomEnabled()) {
+      allVendors = [...custom];
+    } else {
+      allVendors = [...getDefaultVendors(), ...custom];
+    }
+  }
   
   // Translation update function
   function updateTranslations() {
@@ -513,7 +542,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     saveVendorsToStorage(customVendors);
     
     // Update all vendors and tables
-    allVendors = [...getDefaultVendors(), ...customVendors];
+    recomputeAllVendors();
     updateAllTables();
     updateCustomVendorsList();
     updatePlanSelector();
@@ -529,7 +558,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     saveVendorsToStorage(customVendors);
     
     // Update all vendors and tables
-    allVendors = [...getDefaultVendors(), ...customVendors];
+    recomputeAllVendors();
     updateAllTables();
     updateCustomVendorsList();
     updatePlanSelector();
@@ -606,6 +635,23 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
 
   // Initialize
   document.addEventListener('DOMContentLoaded', () => {
+    // Initialize hide-non-custom UI state
+    const hideCheckbox = document.getElementById('hideNonCustomVendors') as HTMLInputElement | null;
+    if (hideCheckbox) {
+      hideCheckbox.checked = isHideNonCustomEnabled();
+      hideCheckbox.addEventListener('change', () => {
+        setHideNonCustomEnabled(hideCheckbox.checked);
+        recomputeAllVendors();
+        updateAllTables();
+        updatePlanSelector();
+        // If plan analysis is visible, refresh it
+        const planSelector = document.getElementById('planSelector') as HTMLSelectElement | null;
+        if (planSelector) {
+          updatePlanRankingResults();
+        }
+      });
+    }
+
     // Set up form submission
     const form = document.getElementById('vendorForm');
     if (form) {
@@ -639,6 +685,7 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
     (window as any).removeCustomVendor = removeCustomVendor;
 
     // Initial render
+    recomputeAllVendors();
     updateAllTables();
     updateCustomVendorsList();
     updatePlanSelector();

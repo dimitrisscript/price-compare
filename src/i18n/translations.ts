@@ -3,6 +3,7 @@ export interface Translations {
   description: string;
   vendorManagement: string;
   addCustomVendor: string;
+  hideNonCustomVendors: string;
   vendorName: string;
   planName: string;
   fixedPrice: string;
@@ -46,6 +47,7 @@ export const translations: Record<string, Translations> = {
     description: "Compare electricity prices across different vendors and consumption levels",
     vendorManagement: "📊 Vendor Management",
     addCustomVendor: "Add Custom Vendor",
+    hideNonCustomVendors: "Hide all non-custom vendors",
     vendorName: "Vendor Name",
     planName: "Plan Name",
     fixedPrice: "Fixed Price (€)",
@@ -87,6 +89,7 @@ export const translations: Record<string, Translations> = {
     description: "Συγκρίνετε τις τιμές ηλεκτρικής ενέργειας μεταξύ διαφορετικών παρόχων και επιπέδων κατανάλωσης",
     vendorManagement: "📊 Διαχείριση Παρόχων",
     addCustomVendor: "Προσθήκη Προσαρμοσμένου Παρόχου",
+    hideNonCustomVendors: "Απόκρυψη όλων των μη προσαρμοσμένων παρόχων",
     vendorName: "Όνομα Παρόχου",
     planName: "Όνομα Προγράμματος",
     fixedPrice: "Πάγιο (€)",
