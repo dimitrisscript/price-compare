@@ -5,45 +5,48 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
 
 <Layout title="Energy Price Comparison">
   <div class="space-y-6">
-    <!-- Tabs -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-3">
-      <div class="flex flex-wrap gap-2" role="tablist" aria-label="Main sections">
-        <button
-          id="tab-price"
-          data-tab-button="price-tab"
-          class="tab-button inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors bg-blue-600 dark:bg-blue-500 text-white"
-          aria-controls="price-tab"
-          aria-selected="true"
-          role="tab">
-          <span aria-hidden="true">💰</span>
-          <span data-translate="priceComparison">Price Comparison</span>
-        </button>
-        <button
-          id="tab-plan"
-          data-tab-button="plan-tab"
-          class="tab-button inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-          aria-controls="plan-tab"
-          aria-selected="false"
-          role="tab">
-          <span aria-hidden="true">🏆</span>
-          <span data-translate="planRankingAnalysis">Plan Analysis</span>
-        </button>
-        <button
-          id="tab-vendor"
-          data-tab-button="vendor-tab"
-          class="tab-button inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-          aria-controls="vendor-tab"
-          aria-selected="false"
-          role="tab">
-          <span aria-hidden="true">📊</span>
-          <span data-translate="vendorManagement">Vendor Management</span>
-        </button>
+    <!-- Main Card with Tabs and Content -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+      <!-- Tabs -->
+      <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex flex-wrap gap-2" role="tablist" aria-label="Main sections">
+          <button
+            id="tab-price"
+            data-tab-button="price-tab"
+            class="tab-button inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors bg-blue-600 dark:bg-blue-500 text-white"
+            aria-controls="price-tab"
+            aria-selected="true"
+            role="tab">
+            <span aria-hidden="true">💰</span>
+            <span data-translate="priceComparison">Price Comparison</span>
+          </button>
+          <button
+            id="tab-plan"
+            data-tab-button="plan-tab"
+            class="tab-button inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+            aria-controls="plan-tab"
+            aria-selected="false"
+            role="tab">
+            <span aria-hidden="true">🏆</span>
+            <span data-translate="planRankingAnalysis">Plan Analysis</span>
+          </button>
+          <button
+            id="tab-vendor"
+            data-tab-button="vendor-tab"
+            class="tab-button inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+            aria-controls="vendor-tab"
+            aria-selected="false"
+            role="tab">
+            <span aria-hidden="true">📊</span>
+            <span data-translate="vendorManagement">Vendor Management</span>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <!-- Price Comparison (default tab) -->
-    <div id="price-tab" data-tab-panel role="tabpanel" aria-labelledby="tab-price" class="tab-panel">
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+      <!-- Tab Content -->
+      <!-- Price Comparison (default tab) -->
+      <div id="price-tab" data-tab-panel role="tabpanel" aria-labelledby="tab-price" class="tab-panel">
+        <div class="p-6">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-2xl font-semibold text-gray-900 dark:text-white" data-translate="priceComparison">Price Comparison</h2>
           <div class="flex gap-2">
@@ -96,12 +99,12 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
             </div>
           ))}
         </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Plan Analysis -->
-    <div id="plan-tab" data-tab-panel role="tabpanel" aria-labelledby="tab-plan" class="tab-panel hidden">
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+      <!-- Plan Analysis -->
+      <div id="plan-tab" data-tab-panel role="tabpanel" aria-labelledby="tab-plan" class="tab-panel hidden">
+        <div class="p-6">
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4" data-translate="planRankingAnalysis">Plan Analysis</h2>
         <div class="mb-4">
               <label for="planSelector" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-translate="selectPlanToAnalyze">
@@ -167,11 +170,10 @@ import { getDefaultVendors, CONSUMPTION_LEVELS } from '../utils/calculations';
             </div>
         </div>
       </div>
-    </div>
 
-    <!-- Vendor Management -->
-    <div id="vendor-tab" data-tab-panel role="tabpanel" aria-labelledby="tab-vendor" class="tab-panel hidden">
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+      <!-- Vendor Management -->
+      <div id="vendor-tab" data-tab-panel role="tabpanel" aria-labelledby="tab-vendor" class="tab-panel hidden">
+        <div class="p-6">
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4" data-translate="vendorManagement">Vendor Management</h2>
         <div class="mb-3 flex items-center gap-2">
               <input id="hideNonCustomVendors" type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400">
