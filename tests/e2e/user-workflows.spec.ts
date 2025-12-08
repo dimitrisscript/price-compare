@@ -7,8 +7,9 @@ test.describe('User Workflows', () => {
   });
 
   test('complete workflow: add vendor and analyze prices', async ({ page }) => {
-    // Add a custom vendor
-    await page.locator('.vendor-accordion-trigger').click();
+    // Switch to vendor management tab and add a custom vendor
+    await page.locator('#tab-vendor').click();
+    await page.waitForSelector('#vendorForm', { timeout: 5000 });
     await page.fill('#vendorName', 'Test Vendor');
     await page.fill('#planName', 'Test Plan');
     await page.fill('#fixedPrice', '5.00');
@@ -18,7 +19,8 @@ test.describe('User Workflows', () => {
     // Verify vendor was added
     await expect(page.locator('#customVendorsList')).toContainText('Test Vendor - Test Plan');
     
-    // Expand a consumption level to see price comparison
+    // Switch to price comparison tab and expand a consumption level
+    await page.locator('#tab-price').click();
     await page.locator('.accordion-trigger').first().click();
     await page.waitForSelector('table tbody tr', { timeout: 10000 });
     
@@ -35,8 +37,8 @@ test.describe('User Workflows', () => {
     // Use first() to select the first occurrence since there are multiple tables
     await page.locator('.plan-name-clickable').filter({ hasText: 'Test Plan' }).first().click();
     
-    // Verify plan ranking accordion opens
-    await expect(page.locator('#plan-ranking-accordion')).toBeVisible();
+    // Verify we switched to plan analysis tab
+    await expect(page.locator('#plan-tab')).not.toHaveClass(/hidden/);
     
     // Verify plan selector has our custom plan selected
     await expect(page.locator('#planSelector')).toHaveValue('Test Vendor|Test Plan');
@@ -47,7 +49,9 @@ test.describe('User Workflows', () => {
   });
 
   test('should handle form validation', async ({ page }) => {
-    await page.locator('.vendor-accordion-trigger').click();
+    // Switch to vendor management tab
+    await page.locator('#tab-vendor').click();
+    await page.waitForSelector('#vendorForm', { timeout: 5000 });
     
     // Try to submit empty form
     await page.locator('#vendorForm button[type="submit"]').click();
@@ -67,7 +71,9 @@ test.describe('User Workflows', () => {
   });
 
   test('should handle invalid input gracefully', async ({ page }) => {
-    await page.locator('.vendor-accordion-trigger').click();
+    // Switch to vendor management tab
+    await page.locator('#tab-vendor').click();
+    await page.waitForSelector('#vendorForm', { timeout: 5000 });
     
     // Try invalid numeric inputs - use type="text" to bypass browser validation
     await page.fill('#vendorName', 'Test Vendor');
@@ -91,8 +97,9 @@ test.describe('User Workflows', () => {
   });
 
   test('should persist custom vendors across page reloads', async ({ page }) => {
-    // Add a custom vendor
-    await page.locator('.vendor-accordion-trigger').click();
+    // Switch to vendor management tab and add a custom vendor
+    await page.locator('#tab-vendor').click();
+    await page.waitForSelector('#vendorForm', { timeout: 5000 });
     await page.fill('#vendorName', 'Persistent Vendor');
     await page.fill('#planName', 'Persistent Plan');
     await page.fill('#fixedPrice', '6.00');
@@ -106,15 +113,18 @@ test.describe('User Workflows', () => {
     await page.reload();
     await page.waitForSelector('[data-translate="vendorManagement"]');
     
-    // Expand vendor section again
-    await page.locator('.vendor-accordion-trigger').click();
+    // Switch to vendor tab again
+    await page.locator('#tab-vendor').click();
+    await page.waitForSelector('#vendorForm', { timeout: 5000 });
     
     // Verify vendor is still there
     await expect(page.locator('#customVendorsList')).toContainText('Persistent Vendor');
   });
 
   test('should handle large numbers of vendors', async ({ page }) => {
-    await page.locator('.vendor-accordion-trigger').click();
+    // Switch to vendor management tab
+    await page.locator('#tab-vendor').click();
+    await page.waitForSelector('#vendorForm', { timeout: 5000 });
     
     // Add multiple vendors
     for (let i = 1; i <= 5; i++) {
@@ -134,7 +144,8 @@ test.describe('User Workflows', () => {
       await expect(vendorList).toContainText(`Vendor ${i} - Plan ${i}`);
     }
     
-    // Check that price comparison still works with many vendors
+    // Switch to price comparison tab and check that it still works with many vendors
+    await page.locator('#tab-price').click();
     await page.waitForSelector('.accordion-trigger', { timeout: 10000 });
     await page.locator('.accordion-trigger').first().click();
     await page.waitForSelector('table tbody tr', { timeout: 15000 });
@@ -145,28 +156,30 @@ test.describe('User Workflows', () => {
     expect(rowCount).toBeGreaterThan(0);
   });
 
-  test('should handle rapid interactions', async ({ page }) => {
-    // Test rapid accordion toggling
-    const vendorAccordion = page.locator('.vendor-accordion-trigger');
+  test('should handle rapid tab switching', async ({ page }) => {
+    // Test rapid tab switching
+    const priceTab = page.locator('#tab-price');
+    const vendorTab = page.locator('#tab-vendor');
+    const planTab = page.locator('#tab-plan');
     
     for (let i = 0; i < 5; i++) {
-      await vendorAccordion.click();
+      await vendorTab.click();
       await page.waitForTimeout(50);
-      await vendorAccordion.click();
+      await planTab.click();
+      await page.waitForTimeout(50);
+      await priceTab.click();
       await page.waitForTimeout(50);
     }
     
-    // Should end in a consistent state
-    const vendorContent = page.locator('#vendor-accordion');
-    const isVisible = await vendorContent.isVisible();
-    
-    // Toggle one more time to ensure it's working
-    await vendorAccordion.click();
-    await expect(vendorContent.isVisible()).not.toBe(isVisible);
+    // Should end in a consistent state (price tab should be active)
+    await expect(page.locator('#price-tab')).not.toHaveClass(/hidden/);
+    await expect(page.locator('#vendor-tab')).toHaveClass(/hidden/);
+    await expect(page.locator('#plan-tab')).toHaveClass(/hidden/);
   });
 
   test('should handle keyboard navigation', async ({ page }) => {
-    await page.locator('.vendor-accordion-trigger').click();
+    // Switch to vendor management tab
+    await page.locator('#tab-vendor').click();
     
     // Wait for form to be visible
     await page.waitForSelector('#vendorForm', { timeout: 5000 });

@@ -8,32 +8,34 @@ test.describe('Energy Price Comparison App', () => {
   });
 
   test('should load the main page with all sections', async ({ page }) => {
-    // Check that main sections are present
-    await expect(page.locator('[data-translate="vendorManagement"]')).toBeVisible();
-    await expect(page.locator('[data-translate="planRankingAnalysis"]')).toBeVisible();
-    await expect(page.locator('[data-translate="priceComparison"]')).toBeVisible();
+    // Check that main sections are present (check tab buttons)
+    await expect(page.locator('#tab-vendor')).toBeVisible();
+    await expect(page.locator('#tab-plan')).toBeVisible();
+    await expect(page.locator('#tab-price')).toBeVisible();
   });
 
-  test('should expand and collapse accordion sections', async ({ page }) => {
-    // Test vendor management accordion
-    const vendorAccordion = page.locator('.vendor-accordion-trigger');
-    const vendorContent = page.locator('#vendor-accordion');
+  test('should switch between tabs', async ({ page }) => {
+    // Test tab switching
+    const vendorTab = page.locator('#tab-vendor');
+    const vendorContent = page.locator('#vendor-tab');
     
-    // Initially hidden
+    // Vendor tab should be hidden initially
     await expect(vendorContent).toHaveClass(/hidden/);
     
-    // Click to expand
-    await vendorAccordion.click();
+    // Click to switch to vendor tab
+    await vendorTab.click();
     await expect(vendorContent).not.toHaveClass(/hidden/);
     
-    // Click to collapse
-    await vendorAccordion.click();
+    // Switch back to price tab
+    const priceTab = page.locator('#tab-price');
+    await priceTab.click();
     await expect(vendorContent).toHaveClass(/hidden/);
   });
 
   test('should add a custom vendor', async ({ page }) => {
-    // Expand vendor management section
-    await page.locator('.vendor-accordion-trigger').click();
+    // Switch to vendor management tab
+    await page.locator('#tab-vendor').click();
+    await page.waitForSelector('#vendorForm', { timeout: 5000 });
     
     // Fill in vendor form
     await page.fill('#vendorName', 'Test Vendor');
@@ -71,8 +73,8 @@ test.describe('Energy Price Comparison App', () => {
   });
 
   test('should select and analyze a specific plan', async ({ page }) => {
-    // Open the plan ranking accordion
-    await page.locator('.plan-ranking-accordion-trigger').click();
+    // Switch to plan analysis tab
+    await page.locator('#tab-plan').click();
     await page.waitForSelector('#planSelector', { timeout: 10000 });
     
     // Select a specific plan from the dropdown
@@ -119,8 +121,8 @@ test.describe('Energy Price Comparison App', () => {
       // Switch to Greek
       await page.selectOption('#language-selector', 'el');
       
-      // Check that content changed (look for Greek text)
-      await expect(page.locator('[data-translate="vendorManagement"]')).toContainText('Διαχείριση');
+      // Check that content changed (look for Greek text in tab button)
+      await expect(page.locator('#tab-vendor')).toContainText('Διαχείριση');
       
       // Check that footer disclaimer also changed to Greek
       const disclaimerText = page.locator('#footer-disclaimer');
@@ -134,7 +136,7 @@ test.describe('Energy Price Comparison App', () => {
       await page.selectOption('#language-selector', 'en');
       
       // Check that content changed back to English
-      await expect(page.locator('[data-translate="vendorManagement"]')).toContainText('Vendor Management');
+      await expect(page.locator('#tab-vendor')).toContainText('Vendor Management');
       
       // Check that footer disclaimer also changed back to English
       await expect(disclaimerText).toContainText('This page compares only the fixed (blue) tariffs of providers.');
@@ -148,13 +150,14 @@ test.describe('Energy Price Comparison App', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     
-    // Check that all sections are still accessible
-    await expect(page.locator('[data-translate="vendorManagement"]')).toBeVisible();
-    await expect(page.locator('[data-translate="planRankingAnalysis"]')).toBeVisible();
+    // Check that tabs are visible
+    await expect(page.locator('#tab-price')).toBeVisible();
+    await expect(page.locator('#tab-plan')).toBeVisible();
+    await expect(page.locator('#tab-vendor')).toBeVisible();
     
-    // Test mobile navigation
-    await page.locator('.vendor-accordion-trigger').click();
-    await expect(page.locator('#vendor-accordion')).toBeVisible();
+    // Test mobile tab navigation
+    await page.locator('#tab-vendor').click();
+    await expect(page.locator('#vendor-tab')).not.toHaveClass(/hidden/);
   });
 
   test('should display footer with last update and dynamic disclaimer', async ({ page }) => {
@@ -259,11 +262,11 @@ test.describe('Visual Regression Tests', () => {
 
   test('vendor management section should match baseline', async ({ page }) => {
     await page.goto('/');
-    await page.locator('.vendor-accordion-trigger').click();
-    await page.waitForSelector('#vendor-accordion');
+    await page.locator('#tab-vendor').click();
+    await page.waitForSelector('#vendor-tab', { timeout: 5000 });
     
     // Take screenshot of the vendor management section
-    const vendorSection = page.locator('.vendor-accordion-content');
+    const vendorSection = page.locator('#vendor-tab');
     await expect(vendorSection).toHaveScreenshot('vendor-management-section.png');
   });
 
@@ -294,11 +297,11 @@ test.describe('Visual Regression Tests', () => {
 
   test('plan ranking section should match baseline', async ({ page }) => {
     await page.goto('/');
-    await page.locator('.plan-ranking-accordion-trigger').click();
+    await page.locator('#tab-plan').click();
     await page.waitForSelector('#planSelector', { timeout: 10000 });
     
     // Take screenshot of the plan ranking section
-    const rankingSection = page.locator('.plan-ranking-accordion-content');
+    const rankingSection = page.locator('#plan-tab');
     await expect(rankingSection).toHaveScreenshot('plan-ranking-section.png');
   });
 
