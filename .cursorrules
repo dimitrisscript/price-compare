@@ -1,0 +1,23 @@
+# Electricity Price Updates
+
+When the user asks to "update prices", "refresh electricity prices", or similar:
+
+1. Read src/utils/prices.ts to see current vendors and plans
+2. Use web search to find current fixed (blue) plan pricing for each Greek electricity vendor
+3. Focus on: fixedPrice (monthly fee in EUR) and kwhPrice (per kWh rate)
+4. Compare findings with existing data
+5. Report any changes found (price updates, new plans, discontinued plans)
+6. Update prices.ts with user approval
+
+Vendors to check:
+- ΔΕΗ (dei.gr) - myHome plans
+- ΖΕΝΙΘ (zenith.gr) - Power Home Secure
+- Φυσικό Αέριο (fysikoaerioellados.gr) - Home Fixed
+- Elpedison (elpedison.gr) - fixed rate plans
+- nrg (nrg.gr) - Fixed plans
+- Volton (volton.gr) - Blue plans
+- ΗΡΩΝ (heron.gr) - Blue Generous plans
+- Ελίν (energy.elin.gr) - Power On! Blue plans
+- Eunice (eunice-power.gr) - Home plans
+- Protergia (protergia.gr) - Value plans
+
